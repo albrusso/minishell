@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 12:53:57 by albrusso          #+#    #+#             */
-/*   Updated: 2024/02/06 15:59:35 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/02/08 15:45:02 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,21 @@ typedef struct s_lexer
 typedef struct s_shell
 {
 	char	*rl_prompt;
-	char	**envp;
+	char	**env;
 	char	**cmd;
 	char	*path;
 	t_lexer	*all_lexer;
 	char	*curr_pwd;
 	char	*old_pwd;
+	char	*home_pwd;
 	int		nbr_pipe;
 }	t_shell;
+
+int	ft_cd(const char *path, t_shell *root);
+char	*ft_search_pwd(char **envp, const char *str);
+
+char	**ft_arrdup(char **arr);
+void	ft_free_array(char **arr);
+void	ft_clean_exit(t_shell *root);
+
 #endif

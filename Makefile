@@ -6,14 +6,16 @@
 #    By: albrusso <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/06 14:42:23 by albrusso          #+#    #+#              #
-#    Updated: 2024/02/06 16:00:59 by albrusso         ###   ########.fr        #
+#    Updated: 2024/02/08 14:45:37 by albrusso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
 CC		=	cc
 CFLAGS	=	-Wall -Werror -Wextra -g
-SRC		=	main.c
+SRC		=	main.c \
+			builtins/cd.c \
+			utils.c
 LIBFT	=	libft/libft.a
 OBJ		=	$(SRC:.c=.o)
 
