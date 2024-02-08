@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 14:37:48 by albrusso          #+#    #+#             */
-/*   Updated: 2024/02/08 15:34:24 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:27:09 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,5 @@ void	ft_clean_exit(t_shell *root)
 	free(root->curr_pwd);
 	free(root->home_pwd);
 	free(root->path);
+	exit(0);
 }
