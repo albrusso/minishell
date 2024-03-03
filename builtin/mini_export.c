@@ -1,41 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   mini_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 12:36:40 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/03 17:17:36 by albrusso         ###   ########.fr       */
+/*   Created: 2024/03/03 14:37:24 by albrusso          #+#    #+#             */
+/*   Updated: 2024/03/03 15:50:49 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../inc/minishell.h"
 
-# include "../libft/libft.h"
-# include <stdio.h>
-# include <fcntl.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <signal.h>
-
-typedef struct s_data
+int	arrlen(char **arr)
 {
-	t_list	*env;
-	char	**path;
-	char	*prompt;
-}		t_data;
+	int	i;
 
-void	init_data(t_data *d, char **envp);
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
+}
 
-int	arrlen(char **arr);
+int	mini_export()
+{
+	int	i;
+	int	j;
 
-t_list	*get_env(char **envp);
-char	**get_path(void);
-
-
-
-
-
-#endif
+	j = 0;
+	if (arrlen() == 1)
+	{
+		
+	}
+}

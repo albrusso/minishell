@@ -1,41 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   mini_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 12:36:40 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/03 17:17:36 by albrusso         ###   ########.fr       */
+/*   Created: 2024/03/03 14:37:13 by albrusso          #+#    #+#             */
+/*   Updated: 2024/03/03 14:50:16 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../inc/minishell.h"
 
-# include "../libft/libft.h"
-# include <stdio.h>
-# include <fcntl.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <signal.h>
-
-typedef struct s_data
+void	print_lst(t_list **lst)
 {
-	t_list	*env;
-	char	**path;
-	char	*prompt;
-}		t_data;
+	while ((*lst))
+	{
+		if (!(*lst)->next)
+			break ;
+		ft_putstr_fd((char *)(*lst)->content, STDIN_FILENO);
+		*lst = (*lst)->next;
+	}
+	ft_putstr_fd((char *)(*lst)->content, STDIN_FILENO);
+}
 
-void	init_data(t_data *d, char **envp);
-
-int	arrlen(char **arr);
-
-t_list	*get_env(char **envp);
-char	**get_path(void);
-
-
-
-
-
-#endif
+int	mini_env(t_list *env)
+{
+	print_lst(&env);
+	return (0);
+}
