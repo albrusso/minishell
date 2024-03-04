@@ -1,31 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_env.c                                         :+:      :+:    :+:   */
+/*   free_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 14:37:13 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/03 14:50:16 by albrusso         ###   ########.fr       */
+/*   Created: 2024/03/04 17:55:12 by albrusso          #+#    #+#             */
+/*   Updated: 2024/03/04 18:05:40 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "minishell.h"
 
-void	print_lst(t_list **lst)
+void free_lst(t_list **lst)
 {
-	while ((*lst))
-	{
-		if (!(*lst)->next)
-			break ;
-		ft_putstr_fd((char *)(*lst)->content, STDIN_FILENO);
-		*lst = (*lst)->next;
+	t_list *curr;
+	t_list *next;
+
+	if (!lst || !*lst)
+		return;
+	curr = *lst;
+	while (curr) {
+		next = curr->next;
+		free(curr->content);
+		free(curr);
+		curr = next;
 	}
-	ft_putstr_fd((char *)(*lst)->content, STDIN_FILENO);
+	*lst = NULL;
 }
 
-int	mini_env(t_list *env)
+void	free_array(char **arr)
 {
-	print_lst(&env);
-	return (0);
+	int	i;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+	arr = NULL;
 }
+

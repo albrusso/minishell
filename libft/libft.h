@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 14:39:57 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/03 14:29:25 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:36:41 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void			ft_putnbr_fd(int n, int fd);
 
 void			ft_putstr_fd(char *s, int fd);
 
-char			**ft_split(char const *s, char c);
+char		**ft_split(char const *s, char c);
 
 char			*ft_strchr(const char *str, int c);
 

@@ -5,54 +5,85 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 14:40:37 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/03 17:18:53 by albrusso         ###   ########.fr       */
+/*   Created: 2024/03/04 16:53:09 by albrusso          #+#    #+#             */
+/*   Updated: 2024/03/04 18:15:42 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/minishell.h"
+#include "minishell.h"
 
-void	print_lst(t_list **lst)
+void	print_list(t_list **lst)
 {
-	while ((*lst))
+	while (*lst)
 	{
-		if (!(*lst)->next)
-			break ;
-		ft_putendl_fd((char *)(*lst)->content, STDIN_FILENO);
+		printf("%s\n", (char *)(*lst)->content);
 		*lst = (*lst)->next;
 	}
-	ft_putendl_fd((char *)(*lst)->content, STDIN_FILENO);
 }
 
-void	print_arr(char **arr)
+void	init_data(t_shell *d, char **envp)
+{
+	d->prompt = NULL;
+	if (envp)
+	{
+		d->env = get_env(envp);
+		d->path = get_path();
+	}
+}
+
+int	is_whitespace(char c)
+{
+	if (c == ' ' || (c >= 8 && c <= 14))
+		return (1);
+	return (0);
+}
+
+
+int	skip_space(char *s)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	while (arr[i])
+	j = 0;
+	while (s[j])
 	{
-		ft_putendl_fd(arr[i], STDIN_FILENO);
+		if (!is_whitespace(s[j]))
+			break ;
 		i++;
+		j++;
 	}
+	return (i);
+}
+
+void	start_loop(t_shell *d)
+{
+	char	*usr;
+	char	*msg;
+	char	*tmp;
+
+	usr = getenv("USER");
+	if (!usr)
+		usr = ft_strdup("guest");
+	msg = ft_strjoin(usr, "@minishell v3.7> ");
+	tmp = readline(msg);
+	d->prompt = ft_substr(tmp, skip_space(tmp), ft_strlen(tmp));
+	if(d->prompt[0])
+		add_history(d->prompt);
+	init_data(d, NULL);
+	start_loop(d);
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	t_data	data;
-	char	*usr;
-	//char	*msg;
+	t_shell	data;
 
 	if (ac != 1 || av[1])
-		return(ft_putstr_fd("minishell don't accept argument\n", STDIN_FILENO), 0);
+		return(ft_putendl_fd("minishell don't accept agruments!", STDIN_FILENO), 0);
 	init_data(&data, envp);
-	usr = getenv("USER");
-	if (!usr)
-		usr = ft_strdup("guest");
-	// while (1)
-	// {
-	// 	data.prompt = readline(msg = ft_strjoin(usr, "@minishell v3.7> "));
-	// }
-	print_lst(&data.env);
-	print_arr(data.path);
+	start_loop(&data);
+	//print_list(&data.env);
+	free_array(data.path);
+	free_lst(&data.env);
 	return (0);
 }

@@ -1,35 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_export.c                                      :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 14:37:24 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/03 15:50:49 by albrusso         ###   ########.fr       */
+/*   Created: 2024/03/04 16:52:05 by albrusso          #+#    #+#             */
+/*   Updated: 2024/03/04 18:01:42 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-int	arrlen(char **arr)
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "libft/libft.h"
+
+typedef struct s_shell
 {
-	int	i;
+		t_list	*env;
+		char	**path;
+		char	*prompt;
+}		t_shell;
 
-	i = 0;
-	while (arr[i])
-		i++;
-	return (i);
-}
+t_list	*get_env(char **envp);
+char	**get_path(void);
 
-int	mini_export()
-{
-	int	i;
-	int	j;
+void free_lst(t_list **lst);
+void	free_array(char **arr);
 
-	j = 0;
-	if (arrlen() == 1)
-	{
-		
-	}
-}
+
+
+
+#endif

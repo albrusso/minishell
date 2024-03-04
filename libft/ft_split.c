@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 14:03:58 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/03 14:32:11 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:43:15 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,67 +14,58 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-size_t	ft_nbr_split(const char *s, char c)
+int	ft_counter(char const *s, char c)
 {
-	size_t	i;
-	size_t	n;
-	size_t	len;
+	int		i;
 
 	i = 0;
-	n = 0;
-	len = 0;
-	while (1)
-	{
-		if (s[i] == c || s[i] == '\0')
-		{
-			if (len != 0)
-				n++;
-			len = 0;
-		}
-		else
-			len++;
-		if (s[i] == '\0')
-			break ;
+	if (*s && *s != c)
 		i++;
+	while (*s && *(s + 1))
+	{
+		if (*s == c && *(s + 1) != c)
+			i++;
+		s++;
 	}
-	return (n);
+	return (i + 1);
 }
 
-void	ft_add_str(const char *s, char c, char **arr, size_t n)
+int	leng(char const *s, char c)
 {
-	size_t	i;
-	size_t	j;
-	size_t	len;
-	char	*tmp;
+	int	i;
 
 	i = 0;
-	j = 0;
-	len = 0;
-	while (j < n)
+	while (*s && *s != c)
 	{
-		if (s[i] == c || s[i] == '\0')
-		{
-			if (len != 0)
-			{
-				tmp = ft_substr(s, (unsigned int)(i - len), len);
-				arr[j] = tmp;
-				j++;
-			}
-			len = 0;
-		}
-		else
-			len++;
 		i++;
+		s++;
 	}
+	return (i + 1);
 }
 
-char	**ft_split(const char *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char	**arr;
-	size_t	n;
+	int		total;
+	int		len;
+	int		i;
 
-	n = ft_nbr_split(s, c);
-	arr = ft_calloc((n + 1), sizeof(char *));
-	ft_add_str(s, c, arr, n);
+	i = 0;
+	total = ft_counter(s, c);
+	arr = ft_calloc(total + 1, sizeof(char *));
+	if (!arr)
+		return (NULL);
+	while (*s && i < total - 1 && total != 1)
+	{
+		while (*s == c)
+			s++;
+		len = leng(s, c);
+		arr[i] = ft_calloc(len, sizeof(char));
+		if (!arr[i])
+			return (NULL);
+		ft_strlcpy(arr[i], s, len);
+		i++;
+		s += len - 1;
+	}
 	return (arr);
 }

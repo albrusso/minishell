@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils.c                                        :+:      :+:    :+:   */
+/*   env_tools.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 16:27:33 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/03 17:12:54 by albrusso         ###   ########.fr       */
+/*   Created: 2024/03/04 17:53:19 by albrusso          #+#    #+#             */
+/*   Updated: 2024/03/04 18:04:59 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "minishell.h"
 
 t_list	*get_env(char **envp)
 {
 	int	i;
-	t_list	*tmp;
+	t_list *tmp;
 
-	i = 1;
-	if (envp[0])
-	{
-		tmp = ft_lstnew(ft_strdup(envp[i]));
-		tmp = tmp->next;
-	}
+	i = 0;
+	tmp = NULL;
 	while (envp[i])
 	{
 		ft_lstadd_back(&tmp, ft_lstnew(ft_strdup(envp[i])));
@@ -33,22 +29,23 @@ t_list	*get_env(char **envp)
 
 char	**get_path(void)
 {
-	int		len;
+	char	*tmp;
+	char	*tmp1;
 	char	**path;
-	char	**tmp;
-	char	*s;
-	
-	s = getenv("PATH");
-	if (!s)
+	int		i;
+
+	i = 0;
+	tmp = getenv("PATH");
+	if (!tmp)
 		return (NULL);
-	tmp = ft_split(s, ':');
-	len = arrlen(tmp);
-	path = (char **)ft_calloc(len + 1, sizeof(char *));
-	len = -1;
-	while (tmp[len++])
-		path[len] = ft_strjoin(tmp[len], "/");
-	len = -1;
-	while (tmp[len++])
-		free(tmp[len]);
+	path = ft_split(tmp, ':');
+	while (path[i])
+	{
+		tmp1 = ft_strdup(path[i]);
+		free(path[i]);
+		path[i] = ft_strjoin(tmp1, "/");
+		free(tmp1);
+		i++;
+	}
 	return (path);
 }

@@ -6,7 +6,7 @@
 #    By: albrusso <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/07 14:16:03 by albrusso          #+#    #+#              #
-#    Updated: 2022/11/16 12:15:30 by albrusso         ###   ########.fr        #
+#    Updated: 2024/03/04 16:51:52 by albrusso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,13 +85,7 @@ SRCS	=	ft_isalnum.c      \
 
 OBJS	=	$(SRCS:.c=.o)
 
-all:		header $(NAME)
-
-header:
-	@echo "$(ORANGE)Name:$(RESET)    libft"
-	@echo "$(ORANGE)Author:  $(RESET)albrusso$(RESET)"
-	@echo "$(ORANGE)Version: $(RESET)v 1.0$(RESET)"
-	@echo
+all:		$(NAME)
 
 $(NAME):	$(OBJS)
 			@ ar rcs $(NAME) $(OBJS)
@@ -107,6 +101,6 @@ fclean:		clean
 
 re:			fclean all
 
-PHONY:		all header clean fclean re
+PHONY:		all clean fclean re
 
 .SILENT:
