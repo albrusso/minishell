@@ -6,7 +6,7 @@
 #    By: albrusso <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/04 16:58:48 by albrusso          #+#    #+#              #
-#    Updated: 2024/03/04 18:03:35 by albrusso         ###   ########.fr        #
+#    Updated: 2024/03/05 09:41:59 by albrusso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,9 @@ RESET	=	\033[00m
 
 SRC		=	main.c \
 			env_tools.c \
-			free_tools.c
+			free_tools.c \
+			lexer.c \
+			lexer_tools.c
 
 OBJ		=	$(SRC:.c=.o)
 
@@ -52,7 +54,7 @@ all:		$(NAME)
 
 $(NAME):	$(OBJ)
 			@make -sC libft
-			@$(CC) $(CFLAGS) $(OBJ) -lreadline -o $(NAME) $(LIBFT)
+			@$(CC) $(CFLAGS) $(OBJ) -L/opt/homebrew/opt/readline/lib -o $(NAME) $(LIBFT) -lreadline
 			@echo "$(BLUE)minishell $(GREEN)compiled!$(RESET)"
 
 clean:

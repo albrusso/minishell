@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:53:09 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/04 18:15:42 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/05 09:42:51 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	print_list(t_list **lst)
 void	init_data(t_shell *d, char **envp)
 {
 	d->prompt = NULL;
+	d->lex_list = NULL;
 	if (envp)
 	{
 		d->env = get_env(envp);
@@ -56,6 +57,12 @@ int	skip_space(char *s)
 	return (i);
 }
 
+void	restart_loop(t_shell *d)
+{
+	init_data(d, NULL);
+	start_loop(d);
+}
+
 void	start_loop(t_shell *d)
 {
 	char	*usr;
@@ -70,8 +77,10 @@ void	start_loop(t_shell *d)
 	d->prompt = ft_substr(tmp, skip_space(tmp), ft_strlen(tmp));
 	if(d->prompt[0])
 		add_history(d->prompt);
-	init_data(d, NULL);
-	start_loop(d);
+	lexer(d);
+	free(msg);
+	free(tmp);
+	restart_loop(d);
 }
 
 int	main(int ac, char **av, char **envp)
