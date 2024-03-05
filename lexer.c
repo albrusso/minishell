@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:43:53 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/05 10:22:22 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/05 16:03:54 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,5 +183,5 @@ void	lexer(t_shell *d)
 		i += read;
 		i++;
 	}
-	print_lexer(d->lex_list);
+	//print_lexer(d->lex_list);
 }

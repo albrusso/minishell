@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:53:09 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/05 09:42:51 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/05 16:13:15 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_list(t_list **lst)
 {
 	while (*lst)
 	{
-		printf("%s\n", (char *)(*lst)->content);
+		ft_putendl_fd((char *)(*lst)->content, 1);
 		*lst = (*lst)->next;
 	}
 }
@@ -74,12 +74,13 @@ void	start_loop(t_shell *d)
 		usr = ft_strdup("guest");
 	msg = ft_strjoin(usr, "@minishell v3.7> ");
 	tmp = readline(msg);
-	d->prompt = ft_substr(tmp, skip_space(tmp), ft_strlen(tmp));
+	d->prompt = ft_substr(tmp, skip_space(tmp), ft_strlen(tmp) + 1);
 	if(d->prompt[0])
 		add_history(d->prompt);
 	lexer(d);
 	free(msg);
 	free(tmp);
+	free(d->prompt);
 	restart_loop(d);
 }
 
@@ -90,7 +91,7 @@ int	main(int ac, char **av, char **envp)
 	if (ac != 1 || av[1])
 		return(ft_putendl_fd("minishell don't accept agruments!", STDIN_FILENO), 0);
 	init_data(&data, envp);
-	start_loop(&data);
+	//start_loop(&data);
 	//print_list(&data.env);
 	free_array(data.path);
 	free_lst(&data.env);
