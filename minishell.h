@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:43:05 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/19 16:09:43 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:28:58 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,6 @@ typedef struct s_mini
 
 int	ft_shell_init(t_mini *shell, char **envp);
 char	**ft_arrdup(char **arr);
+char	**ft_pathdup(char *s);
+
 #endif

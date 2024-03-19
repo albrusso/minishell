@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:08:30 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/19 16:10:11 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:28:53 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,21 @@ char	**ft_arrdup(char **arr)
 		i++;
 	}
 	return (rtn);
+}
+
+char	**ft_pathdup(char *s)
+{
+	char	**tmp;
+	int		i;
+
+	i = 0;
+	tmp = ft_split(s, ':');
+	free(s);
+	while (tmp[i])
+	{
+		if (ft_strncmp(&tmp[i][ft_strlen(tmp[i]) - 1], "/", 1) != 0)
+			tmp[i] = ft_strjoin(tmp[i], "/");
+		i++;
+	}
+	return (tmp);
 }
