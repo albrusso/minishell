@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:43:05 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/19 16:28:58 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:41:37 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
@@ -63,6 +64,7 @@ typedef struct s_parser
 typedef struct s_mini
 {
 	char					*prompt;
+	char					*msg;
 	char					**path;
 	char					**env;
 	t_simple_cmd			*simple_cmd;
@@ -78,5 +80,9 @@ typedef struct s_mini
 int	ft_shell_init(t_mini *shell, char **envp);
 char	**ft_arrdup(char **arr);
 char	**ft_pathdup(char *s);
+void	free_arr(char **arr);
+int	ft_start_shell(t_mini *shell);
+int	ft_chrlast(char *s, char c);
+int	ft_restart_shell(t_mini *shell);
 
 #endif

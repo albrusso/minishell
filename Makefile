@@ -6,7 +6,7 @@
 #    By: albrusso <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:14:01 by albrusso          #+#    #+#              #
-#    Updated: 2024/03/19 16:21:14 by albrusso         ###   ########.fr        #
+#    Updated: 2024/03/21 14:03:32 by albrusso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ DEFAULT	=	\033[0m
 
 SRC		=	src/main.c  \
 			src/shell.c \
-			src/utils.c
+			src/utils.c \
+			src/loop.c
 
 OBJ		=	$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
@@ -49,7 +50,7 @@ OBJ		=	$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 all:	$(NAME)
 $(NAME): $(OBJ)
 	@make -sC mylib
-	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(MYLIB)
+	@$(CC) $(CFLAGS) -lreadline $(OBJ) -o $(NAME) $(MYLIB)
 
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	@printf "$(WHITE)%s$(BLUE)%-$(SIZE)s$(GREEN)%s$(DEFAULT)\n" "Compiling... " "$<" "[OK]"
@@ -78,6 +79,6 @@ run: $(NAME)
 	./$(NAME)
 
 mem: $(NAME)
-		valgrind --leak-check=full ./$(NAME)
+		valgrind --leak-check=full --show-leak-kinds=all --suppressions=./readline.supp ./$(NAME)
 
 .PHONY: all clean fclean re run mem

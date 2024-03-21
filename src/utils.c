@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:08:30 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/19 16:28:53 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:12:41 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**ft_arrdup(char **arr)
 	i = 0;
 	while (arr[i] != NULL)
 		i++;
-	rtn = calloc(sizeof(char *), i + 1);
+	rtn = ft_calloc(sizeof(char *), i + 1);
 	if (!rtn)
 		return (NULL);
 	i = 0;
@@ -39,17 +39,52 @@ char	**ft_arrdup(char **arr)
 
 char	**ft_pathdup(char *s)
 {
-	char	**tmp;
+	char	*tmp;
+	char	**path;
 	int		i;
 
 	i = 0;
-	tmp = ft_split(s, ':');
-	free(s);
-	while (tmp[i])
+	path = ft_split(s, ':');
+	while (path[i])
 	{
-		if (ft_strncmp(&tmp[i][ft_strlen(tmp[i]) - 1], "/", 1) != 0)
-			tmp[i] = ft_strjoin(tmp[i], "/");
+		if (ft_strncmp(&path[i][ft_strlen(path[i]) - 1], "/", 1) != 0)
+		{
+			tmp = ft_strjoin(path[i], "/");
+			free(path[i]);
+			path[i] = tmp;
+		}
 		i++;
 	}
-	return (tmp);
+	return (path);
+}
+
+void	free_arr(char **arr)
+{
+	int	i;
+	
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
+int	ft_chrlast(char *s, char c)
+{
+	int	len;
+	int	i;
+	int	last;
+
+	len = ft_strlen(s);
+	i = 0;
+	last = 0;
+	while (i < len)
+	{
+		if (s[i] == c)
+			last = i;
+		i++;
+	}
+	return (last);
 }

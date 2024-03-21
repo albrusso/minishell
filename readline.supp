@@ -1,0 +1,28 @@
+{  
+   readline
+   Memcheck:Leak
+   ...
+   ...
+   fun:readline
+   fun:ft_start_shell
+   fun:main
+}
+
+{  
+   readline
+   Memcheck:Leak
+   ...
+   ...
+   fun:rl_initialize
+   fun:readline
+}
+
+{  
+   readline
+   Memcheck:Leak
+   ...
+   ...
+   fun:add_history
+   fun:ft_start_shell
+   fun:main
+}
