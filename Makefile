@@ -6,7 +6,7 @@
 #    By: albrusso <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:14:01 by albrusso          #+#    #+#              #
-#    Updated: 2024/03/21 14:03:32 by albrusso         ###   ########.fr        #
+#    Updated: 2024/03/22 16:28:04 by albrusso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,10 +36,8 @@ DEFAULT	=	\033[0m
 #                                   FILES                                      #
 ################################################################################
 
-SRC		=	src/main.c  \
-			src/shell.c \
-			src/utils.c \
-			src/loop.c
+SRC		=	src/main.c \
+			src/shell.c
 
 OBJ		=	$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
