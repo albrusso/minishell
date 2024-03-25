@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:43:05 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/22 16:27:14 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/25 13:07:14 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,15 @@ typedef struct s_mini
 }	t_mini;
 
 void	ft_shell_init(t_mini *shell_data, char **envp);
+void	ft_shell_signal(void);
+void	ft_shell_loop(t_mini *shell_data);
+void	ft_shell_exit(t_mini *shell_data);
+
+t_lexer	*ft_newnode(char *str, t_tokens tok);
+void	ft_addnode(t_lexer **lst, t_lexer *node);
+void	ft_lexclear_one(t_lexer **lst, int i);
+
+void	ft_lexer(t_mini *shell_data);
+
 
 #endif

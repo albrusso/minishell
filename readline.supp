@@ -4,7 +4,7 @@
    ...
    ...
    fun:readline
-   fun:ft_start_shell
+   fun:ft_shell_loop
    fun:main
 }
 
@@ -23,6 +23,6 @@
    ...
    ...
    fun:add_history
-   fun:ft_start_shell
+   fun:ft_shell_loop
    fun:main
 }
