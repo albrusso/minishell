@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 16:01:41 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/23 17:59:07 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/25 15:45:17 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ void	ft_free_shell(t_mini *shell_data)
 	shell_data->msg = NULL;
 	free(shell_data->prompt);
 	shell_data->prompt = NULL;
+	ft_lexclear(&shell_data->lex);
+	rl_clear_history();
+	clear_history();
 }
 
 void	ft_shell_exit(t_mini *shell_data)

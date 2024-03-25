@@ -6,16 +6,31 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 17:33:28 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/25 13:07:05 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:45:17 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	ft_lexprint(t_lexer **lst)
+{
+	t_lexer	*tmp;
+
+	if (!(*lst))
+		return ;
+	tmp = *lst;
+	while (tmp->next)
+	{
+		printf("String: %s\nToken: %d\nIndex: %d\n", tmp->s, tmp->token, tmp->i);
+		tmp = tmp->next;
+	}
+	printf("String: %s\nToken: %d\nIndex: %d\n", tmp->s, tmp->token, tmp->i);
+}
+
 void	ft_shell_clear(t_mini *shell_data)
 {
 	free(shell_data->prompt);
-	rl_clear_history();
+	ft_lexclear(&shell_data->lex);
 	ft_shell_init(shell_data, NULL);
 	ft_shell_loop(shell_data);
 }
@@ -36,6 +51,7 @@ void	ft_shell_loop(t_mini *shell_data)
 	{
 		add_history(shell_data->prompt);
 		ft_lexer(shell_data);
+		ft_lexprint(&shell_data->lex);
 		ft_shell_clear(shell_data);
 	}
 }

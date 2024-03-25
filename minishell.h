@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:43:05 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/25 13:07:14 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:06:40 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,17 @@ void	ft_shell_exit(t_mini *shell_data);
 t_lexer	*ft_newnode(char *str, t_tokens tok);
 void	ft_addnode(t_lexer **lst, t_lexer *node);
 void	ft_lexclear_one(t_lexer **lst, int i);
+void	ft_lexclear_first(t_lexer **lst);
+void	ft_freenode(t_lexer	**node);
+void	ft_lexclear(t_lexer **lst);
 
 void	ft_lexer(t_mini *shell_data);
+
+char	ft_expander(char *prompt, int *i, char **env);
+
+int	ft_strchrindex(char *str, int i, char c);
+
+
 
 
 #endif
