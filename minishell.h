@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:43:05 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/25 17:06:40 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/25 18:36:32 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,12 @@ void	ft_lexclear(t_lexer **lst);
 
 void	ft_lexer(t_mini *shell_data);
 
-char	ft_expander(char *prompt, int *i, char **env);
+char	*ft_expander(char *prompt, char **env);
 
 int	ft_strchrindex(char *str, int i, char c);
 
 
+int	ft_env(t_mini *shell_data);
 
 
 #endif
