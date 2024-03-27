@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/19 15:43:05 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/25 18:36:32 by albrusso         ###   ########.fr       */
+/*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
+/*   Updated: 2024/03/27 18:06:25 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,79 +23,46 @@
 # include <readline/history.h>
 # include <stdbool.h>
 
-extern int	g_exit;
-
-#define ERR_ARGS "Minishell don't accept argument"
-
-typedef enum s_tokens
+typedef struct s_message
 {
-	PIPE = 1,
-	OUTPUT,
-	APPEND,
-	INPUT,
-	HEREDOC,
-}	t_tokens;
+	char	*user;
+	char	*dir;
+	char	*msg;
+}		t_message;
 
 typedef struct s_lexer
 {
 	char			*s;
-	t_tokens		token;
-	int				i;
-	struct s_lexer	*next;
-	struct s_lexer	*prev;
-}	t_lexer;
+	struct s_lexer	*n;
+}		t_lexer;
 
-typedef struct s_simple_cmd
+
+typedef struct s_data
 {
-	char					**s;
-	//int						(*builtin)(t_mini *, struct s_simple_cmd *);
-	int						num_redir;
-	char					*heredoc_file;
-	t_lexer					*redir;
-	struct s_simple_cmds	*next;
-	struct s_simple_cmds	*prev;
-}	t_simple_cmd;
+	char	**env;
+	char	*pwd;
+	char	*oldpwd;
+	char	*line;
+	t_lexer	*lex;
+}		t_data;
 
-typedef struct s_parser
-{
-	t_lexer			*lex;
-	t_lexer			*redir;
-	int				num_redir;
-	struct s_mini	*shell;
-}	t_parser;
+void	t_data_init(t_data *d, char **envp);
+void	t_data_free(t_data *d, bool _exit);
 
-typedef struct s_mini
-{
-	char					*prompt;
-	char					*msg;
-	char					**path;
-	char					**env;
-	t_simple_cmd			*simple_cmd;
-	t_lexer					*lex;
-	char					*pwd;
-	char					*old_pwd;
-}	t_mini;
+char	*mini_getenv(char **env, char *s);
+char	**dup_env(char **envp);
+char	*relative_path(char *s1, char *s2);
+void	free_env(char **env);
 
-void	ft_shell_init(t_mini *shell_data, char **envp);
-void	ft_shell_signal(void);
-void	ft_shell_loop(t_mini *shell_data);
-void	ft_shell_exit(t_mini *shell_data);
+void	t_message_init(t_message *msg, char **env);
+void	t_message_free(t_message *m);
 
-t_lexer	*ft_newnode(char *str, t_tokens tok);
-void	ft_addnode(t_lexer **lst, t_lexer *node);
-void	ft_lexclear_one(t_lexer **lst, int i);
-void	ft_lexclear_first(t_lexer **lst);
-void	ft_freenode(t_lexer	**node);
-void	ft_lexclear(t_lexer **lst);
+void	t_lexer_free(t_lexer **lex);
+void	lexadd_back(t_lexer **lex, t_lexer *new);
+t_lexer	*lexlast(t_lexer *lex);
+t_lexer	*lexnew(char *s);
 
-void	ft_lexer(t_mini *shell_data);
-
-char	*ft_expander(char *prompt, char **env);
-
-int	ft_strchrindex(char *str, int i, char c);
-
-
-int	ft_env(t_mini *shell_data);
+void	lexer(t_data *d);
 
 
 #endif

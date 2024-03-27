@@ -1,30 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   t_message_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/23 17:26:23 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/23 18:03:30 by albrusso         ###   ########.fr       */
+/*   Created: 2024/03/26 16:57:41 by albrusso          #+#    #+#             */
+/*   Updated: 2024/03/26 17:44:42 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-void	ft_sigint_handle(int sig)
+void	t_message_free(t_message *m)
 {
-	if (sig == SIGINT)
-	{
-		ft_putendl_fd("", STDOUT_FILENO);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
+	 if (m->dir)
+	 	free(m->dir);
+	if (m->msg)
+		free(m->msg);
 }
 
-void	ft_shell_signal(void)
+char	*message(t_message *m)
 {
-	signal(SIGINT, ft_sigint_handle);
-	signal(SIGQUIT, SIG_IGN);
+	char	*s1;
+	char	*s2;
+
+	s1 = ft_strjoin("minishell:", m->dir);
+	s2 = ft_strjoin(s1, " ");
+	free(s1);
+	return (s2);
+}
+
+void	t_message_init(t_message *m, char **env)
+{
+	m->dir = relative_path(mini_getenv(env, "HOME"), mini_getenv(env, "PWD"));
+	m->msg = message(m);
 }

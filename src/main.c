@@ -5,58 +5,54 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/22 16:01:41 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/25 15:45:17 by albrusso         ###   ########.fr       */
+/*   Created: 2024/03/26 16:01:23 by albrusso          #+#    #+#             */
+/*   Updated: 2024/03/27 17:26:46 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	g_exit = 0;
-
-void	ft_free_shell(t_mini *shell_data)
+void	clean_exit(t_data *d, t_message *m, bool _exit)
 {
-	int	i;
-
-	i = -1;
-	while (shell_data->env[++i])
-		free(shell_data->env[i]);
-	free(shell_data->env);
-	shell_data->env = NULL;
-	i = -1;
-	while (shell_data->path[++i])
-		free(shell_data->path[i]);
-	free(shell_data->path);
-	shell_data->path = NULL;
-	free(shell_data->old_pwd);
-	shell_data->old_pwd = NULL;
-	free(shell_data->pwd);
-	shell_data->pwd = NULL;
-	free(shell_data->msg);
-	shell_data->msg = NULL;
-	free(shell_data->prompt);
-	shell_data->prompt = NULL;
-	ft_lexclear(&shell_data->lex);
-	rl_clear_history();
-	clear_history();
+	if (d)
+		t_data_free(d, _exit);
+	if (m)
+		t_message_free(m);
+	if (_exit)
+		exit(EXIT_SUCCESS);
 }
 
-void	ft_shell_exit(t_mini *shell_data)
+void	run_shell(t_data *d, t_message *m)
 {
-	ft_free_shell(shell_data);
-	write(STDOUT_FILENO, "exit\n", 5);
-	exit(g_exit);
+	char	*tmp;
+	char	**str;
+	int		i;
+
+	i = 0;
+	t_message_init(m, d->env);
+	tmp = readline(m->msg);
+	d->line = ft_strtrim(tmp, " ");
+	free(tmp);
+	if (!d->line || !ft_strncmp(d->line, "exit", 4))
+		clean_exit(d, m, true);
+	if (d->line[0] == '\0')
+		clean_exit(d, m, false);
+	else
+	{
+		add_history(d->line);
+		lexer(d);
+		clean_exit(d, m, false);
+	}
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	t_mini	shell_data;
+	t_data	d;
+	t_message	m;
 
 	if (ac != 1 || av[1])
 		return (0);
-	ft_shell_init(&shell_data, envp);
-	ft_shell_signal();
-	ft_shell_loop(&shell_data);
-	ft_free_shell(&shell_data);
+	t_data_init(&d, envp);
+	run_shell(&d, &m);
 	return (0);
 }
