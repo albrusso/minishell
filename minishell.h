@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/27 18:06:25 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/28 14:53:16 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
+
+extern int g_exit;
 
 typedef struct s_message
 {
@@ -64,5 +66,6 @@ t_lexer	*lexnew(char *s);
 
 void	lexer(t_data *d);
 
+void	expander(t_data *d, t_lexer **lex);
 
 #endif

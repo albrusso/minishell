@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 17:26:53 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/27 18:13:17 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/28 14:55:12 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,39 +17,63 @@ void	lex_print(t_lexer **lex)
 	t_lexer	*tmp;
 
 	tmp = *lex;
-	while(tmp->n)
+	while (tmp->n)
 	{
 		printf("%s\n", tmp->s);
 		tmp = tmp->n;
 	}
+	printf("%s\n", tmp->s);
+}
+
+char	**parse_input(char *s, int n)
+{
+	char	**tokens;
+	int		quotes[2];
+	int		j[2];
+	int		i[2];
+
+	i[0] = -1;
+	i[1] = 0;
+	j[0] = 0;
+	quotes[0] = 0;
+	quotes[1] = 0;
+	tokens = ft_calloc(n + 1, sizeof(char *));
+	while (++i[0] <= n)
+	{
+		if ((s[i[0]] == ' ' || s[i[0]] == '\0') && !quotes[0] && !quotes[1])
+		{
+			j[1] = i[0] - j[0];
+			if (j[1] > 0)
+			{
+				tokens[i[1]] = ft_calloc((j[1] + 1), sizeof(char));
+				ft_strlcpy(tokens[i[1]], &s[j[0]], j[1]);
+				i[1]++;
+			}
+			j[0] = i[0] + 1;
+		}
+		else if (s[i[0]] == '\'')
+			quotes[0] = !quotes[0];
+		else if (s[i[0]] == '\"')
+			quotes[1] = !quotes[1];
+	}
+	return (tokens);
 }
 
 void	lexer(t_data *d)
 {
 	char	**tmp;
-	char	*tmp1;
 	int		i;
 
-	i = 0;
-	tmp = ft_split(d->line, '|');
-	while (tmp[i])
-	{
-		tmp1 = ft_strtrim(tmp[i], " ");
-		free(tmp[i]);
-		tmp[i] = ft_strdup(tmp1);
+	i = -1;
+	tmp = parse_input(d->line, ft_strlen(d->line));
+	while (tmp[++i])
 		lexadd_back(&d->lex, lexnew(ft_strdup(tmp[i])));
-		if (tmp[i + 1])
-			lexadd_back(&d->lex, lexnew(ft_strdup("|")));
-		free(tmp1);
-		i++;
-	}
 	lex_print(&d->lex);
-	i = 0;
-	while (tmp[i])
-	{
+	expander(d, &d->lex);
+	lex_print(&d->lex);
+	i = -1;
+	while (tmp[++i])
 		free(tmp[i]);
-		i++;
-	}
 	free(tmp);
 	t_lexer_free(&d->lex);
 }

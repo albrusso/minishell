@@ -6,11 +6,16 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:01:23 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/27 17:26:46 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/28 16:42:37 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int g_exit = 0;
+
+void	run_shell(t_data *d, t_message *m);
+
 
 void	clean_exit(t_data *d, t_message *m, bool _exit)
 {
@@ -20,12 +25,13 @@ void	clean_exit(t_data *d, t_message *m, bool _exit)
 		t_message_free(m);
 	if (_exit)
 		exit(EXIT_SUCCESS);
+	else
+		run_shell(d, m);
 }
 
 void	run_shell(t_data *d, t_message *m)
 {
 	char	*tmp;
-	char	**str;
 	int		i;
 
 	i = 0;
@@ -37,12 +43,9 @@ void	run_shell(t_data *d, t_message *m)
 		clean_exit(d, m, true);
 	if (d->line[0] == '\0')
 		clean_exit(d, m, false);
-	else
-	{
-		add_history(d->line);
-		lexer(d);
-		clean_exit(d, m, false);
-	}
+	add_history(d->line);
+	lexer(d);
+	clean_exit(d, m, false);
 }
 
 int	main(int ac, char **av, char **envp)

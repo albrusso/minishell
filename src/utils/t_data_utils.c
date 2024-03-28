@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:04:43 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/27 17:24:43 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/28 12:48:46 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ void	t_data_init(t_data *d, char **envp)
 	d->env = dup_env(envp);
 	d->pwd = mini_getenv(d->env, "PWD");
 	d->oldpwd = mini_getenv(d->env, "OLDPWD");
+	d->lex = NULL;
 	d->line = NULL;
 }

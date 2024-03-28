@@ -6,7 +6,7 @@
 #    By: albrusso <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:14:01 by albrusso          #+#    #+#              #
-#    Updated: 2024/03/27 18:00:51 by albrusso         ###   ########.fr        #
+#    Updated: 2024/03/28 14:54:06 by albrusso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ SRC		=	src/main.c \
 			src/utils/t_message_utils.c \
 			src/lexer/lexer_utils.c \
 			src/lexer/t_lexer_utils.c \
-			src/lexer/lexer.c
+			src/lexer/lexer.c \
+			src/expander/expander.c
 
 OBJ		=	$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
@@ -63,6 +64,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/src
 	@mkdir -p $(OBJ_DIR)/src/utils
 	@mkdir -p $(OBJ_DIR)/src/lexer
+	@mkdir -p $(OBJ_DIR)/src/expander
 
 clean:
 	@make clean -sC mylib

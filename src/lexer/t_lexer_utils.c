@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 17:27:33 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/27 17:50:15 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/03/28 12:54:32 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_lexer	*lexnew(char *s)
 {
 	t_lexer	*new;
 
-	new = (t_lexer *)malloc(sizeof(new));
+	new = (t_lexer *)malloc(sizeof(t_lexer));
 	if (!new)
 		return (NULL);
 	new->s = s;
