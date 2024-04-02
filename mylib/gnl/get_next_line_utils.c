@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 13:13:52 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/19 13:58:57 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/02 12:15:48 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	j = -1;
 	while (s2[++j])
 		buffer[i + j] = s2[j];
-	free(s1);
-	free(s2);
+	if (s1)
+		free(s1);
 	return (buffer);
 }
 

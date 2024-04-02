@@ -1,36 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_lexer_utils.c                                    :+:      :+:    :+:   */
+/*   t_parser_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/27 17:27:33 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/02 13:52:49 by albrusso         ###   ########.fr       */
+/*   Created: 2024/04/02 14:30:34 by albrusso          #+#    #+#             */
+/*   Updated: 2024/04/02 16:03:13 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_lexer	*lexnew(char *s)
+t_parser	*parsnew(char **cmd, t_lexer *redir)
 {
-	t_lexer	*new;
+	t_parser	*new;
 
-	new = (t_lexer *)malloc(sizeof(t_lexer));
+	new = (t_parser *)malloc(sizeof(t_parser));
 	if (!new)
 		return (NULL);
-	new->s = s;
+	new->cmd = cmd;
+	new->redir = NULL;
+	if (redir)
+		new->redir = redir;
 	new->n = NULL;
 	return (new);
 }
 
-t_lexer	*lexlast(t_lexer *lex)
+t_parser	*parslast(t_parser *pars)
 {
-	t_lexer	*tmp;
+	t_parser	*tmp;
 
-	if (lex)
+	if (pars)
 	{
-		tmp = lex;
+		tmp = pars;
 		while (1)
 		{
 			if (!tmp->n)
@@ -41,36 +44,38 @@ t_lexer	*lexlast(t_lexer *lex)
 	return (NULL);
 }
 
-void	lexadd_back(t_lexer **lex, t_lexer *new)
+void	parsadd_back(t_parser **pars, t_parser *new)
 {
-	t_lexer	*last;
+	t_parser	*last;
 
-	if (lex)
+	if (pars)
 	{
-		if (*lex)
+		if (*pars)
 		{
-			last = lexlast(*lex);
+			last = parslast(*pars);
 			last->n = new;
 		}
 		else
-			*lex = new;
+			*pars = new;
 	}
 }
 
-void	t_lexer_free(t_lexer **lex)
+void	t_parser_free(t_parser **pars)
 {
-	t_lexer	*tmp;
+	t_parser	*tmp;
 
-	if (lex)
+	if (pars)
 	{
-		while (*lex)
+		while (*pars)
 		{
-			tmp = *lex;
-			*lex = (*lex)->n;
-			if (tmp->s)
-				free(tmp->s);
+			tmp = *pars;
+			*pars = (*pars)->n;
+			if (tmp->cmd)
+				free_array(tmp->cmd);
+			if (tmp->redir)
+				t_lexer_free(&tmp->redir);
 			free(tmp);
 		}
-		*lex = NULL;
+		*pars = NULL;
 	}
 }

@@ -35,3 +35,13 @@
    fun:run_shell
    fun:main
 }
+
+{  
+   readline
+   Memcheck:Leak
+   ...
+   ...
+   fun:add_history
+   fun:clean_exit
+   fun:main
+}

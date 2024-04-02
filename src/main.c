@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:01:23 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/28 16:42:37 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/02 16:03:06 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,19 @@ int g_exit = 0;
 
 void	run_shell(t_data *d, t_message *m);
 
+void	free_array(char **arr)
+{
+	int	i;
+
+	i = -1;
+	while (arr[++i])
+	{
+		if (arr[i])
+			free(arr[i]);
+	}
+	free(arr);
+	arr = NULL;
+}
 
 void	clean_exit(t_data *d, t_message *m, bool _exit)
 {
@@ -45,6 +58,7 @@ void	run_shell(t_data *d, t_message *m)
 		clean_exit(d, m, false);
 	add_history(d->line);
 	lexer(d);
+	parser(d);
 	clean_exit(d, m, false);
 }
 
