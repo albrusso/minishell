@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 17:26:53 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/28 14:55:12 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/02 16:07:56 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	lex_print(t_lexer **lex)
 	t_lexer	*tmp;
 
 	tmp = *lex;
+	if (!tmp)
+		return ;
 	while (tmp->n)
 	{
 		printf("%s\n", tmp->s);
@@ -68,12 +70,11 @@ void	lexer(t_data *d)
 	tmp = parse_input(d->line, ft_strlen(d->line));
 	while (tmp[++i])
 		lexadd_back(&d->lex, lexnew(ft_strdup(tmp[i])));
-	lex_print(&d->lex);
+	//lex_print(&d->lex);
 	expander(d, &d->lex);
-	lex_print(&d->lex);
+	//lex_print(&d->lex);
 	i = -1;
 	while (tmp[++i])
 		free(tmp[i]);
 	free(tmp);
-	t_lexer_free(&d->lex);
 }

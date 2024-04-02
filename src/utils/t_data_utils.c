@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:04:43 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/28 12:48:46 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/02 15:25:02 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ void	t_data_free(t_data *d, bool _exit)
 	if (d->line)
 		free(d->line);
 	d->line = NULL;
+	if (d->lex)
+		t_lexer_free(&d->lex);
+	if (d->pars)
+		t_parser_free(&d->pars);
 }
 
 void	t_data_init(t_data *d, char **envp)
@@ -36,5 +40,6 @@ void	t_data_init(t_data *d, char **envp)
 	d->pwd = mini_getenv(d->env, "PWD");
 	d->oldpwd = mini_getenv(d->env, "OLDPWD");
 	d->lex = NULL;
+	d->pars = NULL;
 	d->line = NULL;
 }
