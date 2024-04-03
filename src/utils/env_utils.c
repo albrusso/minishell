@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:09:43 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/26 17:43:58 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:11:10 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,42 @@ char	*relative_path(char *s1, char *s2)
 	free(s2);
 	free(s3);
 	return (s4);
+}
+
+char	**realloc_copy(char **arr, int size)
+{
+	char	**tmp;
+	int		i;
+	
+	tmp = ft_calloc(size, sizeof(char *));
+	i = -1;
+	while (arr[++i])
+		tmp[i] = ft_strdup(arr[i]);
+	free(arr);
+	return (tmp);
+}
+
+void	mini_setenv(t_data *d, const char *s1, char *s2)
+{
+	char	*tmp;
+	int		i;
+
+	i = -1;
+	while (d->env[++i])
+	{
+		if (!ft_strncmp(d->env[i], s1, ft_strlen(s1)))
+		{
+			free(d->env[i]);
+			tmp = ft_strjoin(s1, "=");
+			d->env[i] = ft_strjoin_gnl(tmp, s2);
+			return ;
+		}
+	}
+	d->env = realloc_copy(d->env, i + 2);
+	tmp = ft_strjoin(s1, "=");
+	d->env[i] = ft_strjoin_gnl(tmp, s2);
+	d->env[i + 1] = NULL;
+	return ;
 }
 
 char	*mini_getenv(char **env, char *s)

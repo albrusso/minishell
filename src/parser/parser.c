@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:34:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/03 15:02:43 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/03 15:09:52 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	pars_print(t_parser **pars)
 	t_parser	*tmp;
 
 	tmp = *pars;
-	while (tmp->n)
+	while (tmp)
 	{
 		printf("+++ cmd +++\n");
 		print_array(tmp->cmd);
@@ -35,11 +35,6 @@ void	pars_print(t_parser **pars)
 		printf("---- ----\n");
 		tmp = tmp->n;
 	}
-	printf("+++ cmd +++\n");
-	print_array(tmp->cmd);
-	printf("+++ red +++\n");
-	lex_print(&tmp->redir);
-	printf("---- ----\n");
 }
 
 int	size_malloc(t_lexer *lex)
@@ -89,7 +84,7 @@ void	fill_cmdredir(t_data *d, char **cmd, t_lexer *lex)
 	redir = NULL;
 	while (lex)
 	{
-		if (lex->s == '|')
+		if (!ft_strncmp(lex->s, "|", 1))
 		{
 			lex = lex->n;
 			break ;
@@ -105,19 +100,26 @@ void	fill_cmdredir(t_data *d, char **cmd, t_lexer *lex)
 	}
 	cmd[i] = NULL;
 	parsadd_back(&d->pars, parsnew(dup_env(cmd), redir));
+	d->lex = lex;
 	free_array(cmd);
-	t_lexer_free(&redir);
 }
 
 void	parser(t_data *d)
 {
 	t_lexer	*tmp;
+	t_lexer	*head;
 	char	**cmd;
 	int		i;
 
+	head = d->lex;
 	tmp = d->lex;
-	i = size_malloc(tmp);
-	cmd = ft_calloc(i + 1, sizeof(char *));
-	fill_cmdredir(d, cmd, tmp);
+	while (tmp)
+	{
+		i = size_malloc(tmp);
+		cmd = ft_calloc(i + 1, sizeof(char *));
+		fill_cmdredir(d, cmd, tmp);
+		tmp = d->lex;
+	}
 	pars_print(&d->pars);
+	d->lex = head;
 }

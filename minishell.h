@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/02 15:32:29 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:16:35 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	t_data_init(t_data *d, char **envp);
 void	t_data_free(t_data *d, bool _exit);
 
 char	*mini_getenv(char **env, char *s);
+void	mini_setenv(t_data *d, const char *s1, char *s2);
 char	**dup_env(char **envp);
 char	*relative_path(char *s1, char *s2);
 void	free_env(char **env);
