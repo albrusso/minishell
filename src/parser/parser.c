@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:34:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/03 14:18:01 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/03 15:02:43 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,44 +80,44 @@ int	is_redir(char *s)
 	return (0);
 }
 
-void	fill_cmdredir(t_data *d, t_parser *par, t_lexer *lex)
+void	fill_cmdredir(t_data *d, char **cmd, t_lexer *lex)
 {
-	int	i;
+	int		i;
+	t_lexer	*redir;
 
 	i = 0;
+	redir = NULL;
 	while (lex)
 	{
-		if (is_redir(lex->s))
+		if (lex->s == '|')
 		{
-			add_redir(&par->redir, lex->s, lex->n->s);
+			lex = lex->n;
+			break ;
+		}
+		else if (is_redir(lex->s))
+		{
+			add_redir(&redir, lex->s, lex->n->s);
 			lex = lex->n;
 		}
 		else
-		{
-			par->cmd[i] = ft_strdup(lex->s);
-			i++;
-		}
+			cmd[i++] = ft_strdup(lex->s);
 		lex = lex->n;
 	}
-	par->cmd[i] = NULL;
-	lex_print(&par->redir);
-	parsadd_back(&d->pars, par);
+	cmd[i] = NULL;
+	parsadd_back(&d->pars, parsnew(dup_env(cmd), redir));
+	free_array(cmd);
+	t_lexer_free(&redir);
 }
 
 void	parser(t_data *d)
 {
 	t_lexer	*tmp;
-	t_lexer	*redir;
-	t_parser	*par;
+	char	**cmd;
 	int		i;
 
-	par = ft_calloc(1, sizeof(t_parser));
-	redir = NULL;
 	tmp = d->lex;
 	i = size_malloc(tmp);
-	par->redir = NULL;
-	par->n = NULL;
-	par->cmd = ft_calloc(i + 1, sizeof(char *));
-	fill_cmdredir(d, par, tmp);
+	cmd = ft_calloc(i + 1, sizeof(char *));
+	fill_cmdredir(d, cmd, tmp);
 	pars_print(&d->pars);
 }
