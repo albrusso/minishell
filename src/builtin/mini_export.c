@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:37:32 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/03 18:11:19 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:31:29 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,21 @@ void	export_inenv(t_data *d, char *s)
 	else
 		tmp2 = ft_strdup(s);
 	i = -1;
-	while (d->env[++i]);
+	while (d->env[++i])
 	{
 		if (!ft_strncmp(d->env[i], tmp2, ft_strlen(tmp2)))
 		{
 			free(d->env[i]);
+			if (tmp1)
+				tmp2 = ft_strjoin_gnl(tmp2, "=");
+			d->env[i] = ft_strjoin(tmp2, tmp1);
+			return ;
 		}
 	}
+	d->env = realloc_copy(d->env, i + 2);
+	d->env[i] = ft_strjoin(tmp2, tmp1);
+	d->env[i + 1] = NULL;
+	free(tmp2);
 }
 
 int	mini_export(t_data *d, char **cmd)

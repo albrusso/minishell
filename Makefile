@@ -6,7 +6,7 @@
 #    By: albrusso <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:14:01 by albrusso          #+#    #+#              #
-#    Updated: 2024/04/03 15:03:04 by albrusso         ###   ########.fr        #
+#    Updated: 2024/04/04 15:40:21 by albrusso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,15 @@ SRC		=	src/main.c \
 			src/lexer/lexer.c \
 			src/expander/expander.c \
 			src/parser/parser.c \
-			src/parser/t_parser_utils.c
+			src/parser/t_parser_utils.c \
+			src/executer/executer.c \
+			src/builtin/mini_cd.c \
+			src/builtin/mini_echo.c \
+			src/builtin/mini_env.c \
+			src/builtin/mini_export.c \
+			src/builtin/mini_pwd.c \
+			src/builtin/mini_unset.c \
+			src/builtin/builtin_utils.c
 
 OBJ		=	$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
@@ -68,6 +76,8 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/src/lexer
 	@mkdir -p $(OBJ_DIR)/src/expander
 	@mkdir -p $(OBJ_DIR)/src/parser
+	@mkdir -p $(OBJ_DIR)/src/executer
+	@mkdir -p $(OBJ_DIR)/src/builtin
 
 clean:
 	@make clean -sC mylib

@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:21:04 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/03 17:17:30 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:25:11 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,33 +23,38 @@ int	cd_error(int i, char *s)
 	return (1);
 }
 
-int	cd_setchange(t_data *d, char *s)
+int	cd_setchange(t_data *d)
 {
 	free(d->oldpwd);
 	d->oldpwd = ft_strdup(d->pwd);
 	free(d->pwd);
-	d->pwd = ft_strdup(s);
-	mini_setenv(d->env, "PWD", d->pwd);
-	mini_setenv(d->env, "OLDPWD", d->oldpwd);
+	d->pwd = getcwd(NULL, 0);
+	mini_setenv(d, "PWD", d->pwd);
+	mini_setenv(d, "OLDPWD", d->oldpwd);
 	return (0);
 }
 
 int	mini_cd(t_data *d, char **cmd)
 {
 	int		ret;
+	char	*tmp;
 
-	if (cmd[2])
+	tmp = mini_getenv(d->env, "HOME");
+	if (cmd && cmd[2])
 		ret = cd_error(42, NULL);
-	else if (!mini_getenv(d->env, "HOME") && !cmd[1])
+	else if (!tmp && !cmd[1])
 		ret = cd_error(-42, NULL);
-	else if (!cmd[1])
-		ret = chdir(mini_getenv(d->env, "HOME"));
+	else if (!cmd[1] && tmp)
+	{
+		ret = chdir(tmp);
+		cd_setchange(d);
+	}
 	else
 	{
 		if (chdir(cmd[1]) == -1)
 			ret = cd_error(0, cmd[1]);
 		else
-			ret = cd_setchange(d, cmd[1]);
+			ret = cd_setchange(d);
 	}
 	return (ret);
 }

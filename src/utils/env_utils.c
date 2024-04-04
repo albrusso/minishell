@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:09:43 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/03 18:11:10 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:24:07 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ char	*relative_path(char *s1, char *s2)
 		s4 = ft_strjoin("~", NULL);
 	else
 		s4 = ft_strjoin("~", s3);
-	free(s1);
-	free(s2);
 	free(s3);
 	return (s4);
 }
@@ -112,7 +110,7 @@ char	*mini_getenv(char **env, char *s)
 	{
 		i[2] = ft_strlen(env[i[0]]);
 		if (!ft_strncmp(env[i[0]], s, i[1]) && env[i[0]][i[1]] == '=')
-			return (ft_substr(env[i[0]], i[1] + 1, i[2]));
+			return (env[i[0]] + i[1] + 1);
 		i[0]++;
 	}
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/03 17:16:35 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/04 17:38:07 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <signal.h>
+# include <wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
@@ -42,6 +43,7 @@ typedef struct s_lexer
 typedef struct s_parser
 {
 	char			**cmd;
+	bool			exec;
 	t_lexer			*redir;
 	struct s_parser	*n;
 }		t_parser;
@@ -49,9 +51,15 @@ typedef struct s_parser
 typedef struct s_data
 {
 	char		**env;
+	char		**path;
 	char		*pwd;
 	char		*oldpwd;
 	char		*line;
+	int			in;
+	int			out;
+	int			exit;
+	int			end[2];
+	int			pid;
 	t_lexer		*lex;
 	t_parser	*pars;
 }		t_data;
@@ -64,6 +72,8 @@ void	mini_setenv(t_data *d, const char *s1, char *s2);
 char	**dup_env(char **envp);
 char	*relative_path(char *s1, char *s2);
 void	free_env(char **env);
+char	**realloc_copy(char **arr, int size);
+
 
 void	t_message_init(t_message *msg, char **env);
 void	t_message_free(t_message *m);
@@ -88,6 +98,20 @@ t_parser	*parslast(t_parser *pars);
 void	parsadd_back(t_parser **pars, t_parser *new);
 void	t_parser_free(t_parser **pars);
 
+int	mini_cd(t_data *d, char **cmd);
+int	mini_echo(char **cmd);
+int	mini_env(char **env, char **path);
+int	mini_export(t_data *d, char **cmd);
+int	mini_pwd(char *s);
+int	mini_unset(t_data *d, char **cmd);
+int	is_builtin(char *s);
+int	execute_builtin(t_data *d, char **cmd);
+void	mini_error(char *s);
+
+void	shell_executor(t_data *d);
+
+
+void	executor(t_data *d);
 
 
 #endif
