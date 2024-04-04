@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:01:23 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 17:36:24 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:09:35 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	clean_exit(t_data *d, t_message *m, bool _exit)
 	if (m)
 		t_message_free(m);
 	if (_exit)
-		exit(EXIT_SUCCESS);
+		exit(g_exit);
 	else
 		run_shell(d, m);
 }
@@ -48,6 +48,8 @@ void	run_shell(t_data *d, t_message *m)
 	int		i;
 
 	i = 0;
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 	t_message_init(m, d->env);
 	tmp = readline(m->msg);
 	d->line = ft_strtrim(tmp, " ");
@@ -59,7 +61,7 @@ void	run_shell(t_data *d, t_message *m)
 	add_history(d->line);
 	lexer(d);
 	parser(d);
-	shell_executor(d);
+	executor(d);
 	clean_exit(d, m, false);
 }
 

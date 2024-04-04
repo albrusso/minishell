@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:16:10 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 17:39:26 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:05:42 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,55 +123,7 @@ void	parent_wait(t_data *d)
 	}
 }
 
-void	signal_print(int sig)
-{
-	(void)sig;
-	g_exit = 130;
-	write(STDOUT_FILENO, "\n", 1);
-}
-
-void	parent_process(t_data *d, t_parser *p)
-{
-	signal(SIGINT, signal_print);
-	signal(SIGQUIT, signal_print);
-	if (p->exec == true && p->n)
-	{
-		close(d->end[1]);
-		if (p->cmd[0])
-		{
-			dup2(d->end[0], STDIN_FILENO);
-			close(d->end[0]);
-		}
-	}
-	parent_wait(d);
-}
-
-void	child_process(t_data *d, t_parser *p)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	if (is_builtin(p->cmd[0]))
-		exec_builtin_fork(d, p);
-	else
-		execvshell(d, p);
-}
-
-void	fork_command(t_data *d, t_parser *p)
-{
-	d->pid = fork();
-	if (d->pid < 0)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	if (d->pid == 0)
-		child_process(d, p);
-	else
-		parent_process(d, p);
-}
-
-
-void	shell_executor(t_data *d)
+void	executor(t_data *d)
 {
 	t_parser	*p;
 
@@ -200,23 +152,23 @@ void	shell_executor(t_data *d)
 	dup2(d->out, STDOUT_FILENO);
 }
 
-void	executor(t_data *d)
-{
-	t_parser	*p;
-	//int			dup[2];
+// void	executor(t_data *d)
+// {
+// 	t_parser	*p;
+// 	//int			dup[2];
 
-	p = d->pars;
-	while (p)
-	{
-		// if (p->n)
-		// {
-		// 	if (pipe(dup) < 0)
-		// 		exit(EXIT_FAILURE);
-		// }
-		if (!p->n)
-			execute_onecmd(d, p);
-		// else
-		// 	execute_fork(d, p);
-		p = p->n;
-	}
-}
+// 	p = d->pars;
+// 	while (p)
+// 	{
+// 		// if (p->n)
+// 		// {
+// 		// 	if (pipe(dup) < 0)
+// 		// 		exit(EXIT_FAILURE);
+// 		// }
+// 		if (!p->n)
+// 			execute_onecmd(d, p);
+// 		// else
+// 		// 	execute_fork(d, p);
+// 		p = p->n;
+// 	}
+// }

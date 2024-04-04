@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:46:58 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/02 13:45:39 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:00:49 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char *try_expand(char *env[], char *s)
 	res = ft_calloc(1, sizeof(char));
 	while (s[++i])
 	{
-		if (s[i] == '$')
+		if (s[i] == '$' && s[i + 1] != '?')
 			res = try_expand_utils(res, env, s, &i);
 		else
 		{

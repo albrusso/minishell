@@ -6,7 +6,7 @@
 #    By: albrusso <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:14:01 by albrusso          #+#    #+#              #
-#    Updated: 2024/04/04 15:40:21 by albrusso         ###   ########.fr        #
+#    Updated: 2024/04/04 18:07:48 by albrusso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRC		=	src/main.c \
 			src/utils/env_utils.c \
 			src/utils/t_data_utils.c \
 			src/utils/t_message_utils.c \
+			src/utils/signal.c \
 			src/lexer/lexer_utils.c \
 			src/lexer/t_lexer_utils.c \
 			src/lexer/lexer.c \
@@ -47,6 +48,7 @@ SRC		=	src/main.c \
 			src/parser/parser.c \
 			src/parser/t_parser_utils.c \
 			src/executer/executer.c \
+			src/executer/pipex.c \
 			src/builtin/mini_cd.c \
 			src/builtin/mini_echo.c \
 			src/builtin/mini_env.c \

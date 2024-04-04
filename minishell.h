@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 17:38:07 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:08:30 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,19 @@ typedef struct s_data
 	t_lexer		*lex;
 	t_parser	*pars;
 }		t_data;
+
+void	signal_handler(int sig);
+void	signal_print(int sig);
+
+void	fork_command(t_data *d, t_parser *p);
+void	child_process(t_data *d, t_parser *p);
+void	parent_process(t_data *d, t_parser *p);
+
+void	parent_wait(t_data *d);
+void	exec_builtin_fork(t_data *d, t_parser *p);
+void	execvshell(t_data *d, t_parser *p);
+
+
 
 void	t_data_init(t_data *d, char **envp);
 void	t_data_free(t_data *d, bool _exit);
