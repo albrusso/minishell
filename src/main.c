@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:01:23 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 18:09:35 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/05 17:57:29 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void	run_shell(t_data *d, t_message *m)
 	signal(SIGQUIT, SIG_IGN);
 	t_message_init(m, d->env);
 	tmp = readline(m->msg);
-	d->line = ft_strtrim(tmp, " ");
+	if (tmp)
+		d->line = ft_strtrim(tmp, " ");
 	free(tmp);
 	if (!d->line || !ft_strncmp(d->line, "exit", 4))
 		clean_exit(d, m, true);
@@ -61,7 +62,7 @@ void	run_shell(t_data *d, t_message *m)
 	add_history(d->line);
 	lexer(d);
 	parser(d);
-	executor(d);
+	executer(d, d->pars);
 	clean_exit(d, m, false);
 }
 

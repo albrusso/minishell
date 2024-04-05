@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 18:08:30 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/05 17:57:37 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,6 @@ typedef struct s_data
 void	signal_handler(int sig);
 void	signal_print(int sig);
 
-void	fork_command(t_data *d, t_parser *p);
-void	child_process(t_data *d, t_parser *p);
-void	parent_process(t_data *d, t_parser *p);
-
-void	parent_wait(t_data *d);
-void	exec_builtin_fork(t_data *d, t_parser *p);
-void	execvshell(t_data *d, t_parser *p);
-
 
 
 void	t_data_init(t_data *d, char **envp);
@@ -87,6 +79,7 @@ char	*relative_path(char *s1, char *s2);
 void	free_env(char **env);
 char	**realloc_copy(char **arr, int size);
 
+void executer(t_data *d, struct s_parser *cmds);
 
 void	t_message_init(t_message *msg, char **env);
 void	t_message_free(t_message *m);
@@ -121,10 +114,11 @@ int	is_builtin(char *s);
 int	execute_builtin(t_data *d, char **cmd);
 void	mini_error(char *s);
 
-void	shell_executor(t_data *d);
 
+int	parslst_size(t_parser *lst);
 
-void	executor(t_data *d);
+void execute_pipeline(t_parser *head);
+
 
 
 #endif

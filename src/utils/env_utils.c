@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:09:43 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 15:24:07 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/05 14:20:12 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	**realloc_copy(char **arr, int size)
 	i = -1;
 	while (arr[++i])
 		tmp[i] = ft_strdup(arr[i]);
-	free(arr);
+	free_array(arr);
 	return (tmp);
 }
 

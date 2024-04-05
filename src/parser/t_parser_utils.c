@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:30:34 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 17:25:59 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:16:53 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,21 @@ void	t_parser_free(t_parser **pars)
 		}
 		*pars = NULL;
 	}
+}
+
+int	parslst_size(t_parser *lst)
+{
+	int			i;
+	t_parser	*tmp;
+
+	if (!lst)
+		return (0);
+	i = 0;
+	tmp = lst;
+	while (tmp)
+	{
+		tmp = tmp->n;
+		i++;
+	}
+	return (i);
 }
