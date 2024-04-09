@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:16:10 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/08 14:46:56 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/09 15:48:42 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	execute_onecmd(t_data *d, t_parser *p)
 
 	i = -1;
 	if (is_builtin(p->cmd[0]))
-		execute_builtin(d, p->cmd);
+		execute_builtin(d, p, p->cmd);
 	else
 	{
 		if (!access(p->cmd[0], F_OK))
@@ -37,27 +37,31 @@ void	execute_onecmd(t_data *d, t_parser *p)
 	}
 }
 
-void	try_execute(t_data *d, char **cmd)
+void	try_execute(t_data *d, t_parser *p, char **cmd)
 {
 	if (is_builtin(cmd[0]))
-		execute_builtin(d, cmd);
+		execute_builtin(d, p, cmd);
 	else
 		execvp(cmd[0], cmd);
 }
 
-void	executer(t_data *d, struct s_parser *cmds)
+void	executer(t_data *d, t_parser *p)
 {
 	int		fd[2];
-	int		prev_fd = STDIN_FILENO;
+	int		prev_fd = d->in;
 	pid_t	pid;
 
-	if (parslst_size(cmds) == 1 && is_builtin(cmds->cmd[0]))
+	if (parslst_size(p) == 1 && is_builtin(p->cmd[0]))
 	{
-		execute_builtin(d, cmds->cmd);
+		open_redirect(d, p);
+		set_redirect(p);
+		execute_builtin(d, p, p->cmd);
 		return ;
 	}
-	while (cmds)
+	while (p)
 	{
+		open_redirect(d, p);
+		set_redirect(p);
 		if (pipe(fd) == -1)
 		{
 			perror("pipe");
@@ -76,21 +80,23 @@ void	executer(t_data *d, struct s_parser *cmds)
 				dup2(prev_fd, STDIN_FILENO);
 				close(prev_fd);
 			}
-			if (cmds->n != NULL)
+			if (p->n != NULL)
 			{
 				dup2(fd[1], STDOUT_FILENO);
 				close(fd[1]);
 			}
-			execute_onecmd(d, cmds);
+			execute_onecmd(d, p);
 			exit(EXIT_FAILURE);
 		}
 		else
 		{
 			close(fd[1]);
-			if (cmds->n != NULL)
+			if (p->n != NULL)
 				prev_fd = fd[0];
 			wait(NULL);
 		}
-		cmds = cmds->n;
+		p = p->n;
 	}
+	dup2(d->in, STDIN_FILENO);
+	dup2(d->out, STDOUT_FILENO);
 }

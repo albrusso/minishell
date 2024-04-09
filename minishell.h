@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/08 17:18:41 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/09 15:46:35 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ typedef struct s_lexer
 typedef struct s_parser
 {
 	char			**cmd;
-	bool			exec;
+	int				fd_in;
+	int				fd_out;
 	t_lexer			*redir;
 	struct s_parser	*n;
 }		t_parser;
@@ -103,17 +104,27 @@ void		parsadd_back(t_parser **pars, t_parser *new);
 void		t_parser_free(t_parser **pars);
 
 int			mini_cd(t_data *d, char **cmd);
-int			mini_echo(char **cmd);
+int			mini_echo(char **cmd, int fd);
 int			mini_env(char **env, char **path);
 int			mini_export(t_data *d, char **cmd);
 int			mini_pwd(char *s);
 int			mini_unset(t_data *d, char **cmd);
 int			is_builtin(char *s);
-int			execute_builtin(t_data *d, char **cmd);
+int			execute_builtin(t_data *d, t_parser *p, char **cmd);
 void		mini_error(char *s);
 
 int			parslst_size(t_parser *lst);
 
 int			arrlen(char **arr);
+
+void	open_redirect(t_data *d, t_parser *p);
+void	open_output(t_parser *p, char *s);
+void	open_append(t_parser *p, char *s);
+void	open_input(t_parser *p, char *s);
+int	heredoc(t_data *d, char *s);
+void	open_heredoc(t_data *d, t_parser *p, char *s);
+void	set_redirect(t_parser *p);
+
+
 
 #endif

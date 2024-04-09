@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 17:26:53 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/09 08:57:37 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/09 14:52:51 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,38 +30,40 @@ void	lex_print(t_lexer **lex)
 char	*realloc_space(char *s, int len, int index)
 {
 	char	*tmp;
-	int		i;
 
-	i = -1;
 	tmp = ft_calloc(len + 2, sizeof(char));
-	while (++i < len + 2)
-	{
-		if (i == index + 1)
-			tmp[i] = ' ';
-		else if (i > index + 1)
-			tmp[i] = s[i + 1];
-		else
-			tmp[i] = s[i];
-	}
-	printf("%s\n", tmp);
+	ft_strlcpy(tmp, s, index + 1);
+	tmp[index + 1] = ' ';
+	ft_strlcpy(tmp + index + 2, s + index + 1, len);
 	free(s);
 	return (tmp);
 }
 
+int	is_redirect(char c)
+{
+	if (c == '>' || c == '<' || c == '|')
+		return (42);
+	return (0);
+}
+
 int	nospace_token(char *s)
 {
+	int	len;
 	int	i;
 
 	i = -1;
-	while (s[++i])
+	len = ft_strlen(s);
+	while (++i < len)
 	{
-		if (s[i] != ' ' && ((s[i] != '<' || s[i] != '>' || s[i] != '|') && s[i + 1]))
+		if (is_redirect(s[i]))
 		{
-			if (s[i + 1] == '<' || s[i + 1] == '>' || s[i + 1] == '|')
-				return (i);
+			if (i > 0 && s[i - 1] != ' ' && !is_redirect(s[i - 1]))
+				return (i - 1);
+			if (s[i + 1] != ' ' && !is_redirect(s[i + 1]))
+				return(i);
 		}
 	}
-	return (0);
+	return (-42);
 }
 
 void	lexhelp(t_data *d, char *s, char **a, int i[2])
@@ -83,7 +85,7 @@ void	lexhelp(t_data *d, char *s, char **a, int i[2])
 	j[0] = i[0] + 1;
 }
 
-char	**parse_input(t_data *d, char *s)
+char	**parse_input(t_data *d)
 {
 	char	**tokens;
 	int		quotes[2];
@@ -94,17 +96,17 @@ char	**parse_input(t_data *d, char *s)
 	i[1] = 0;
 	quotes[0] = 0;
 	quotes[1] = 0;
-	while (nospace_token(s) != 0)
-		s = realloc_space(s, ft_strlen(s), nospace_token(s));
-	n = ft_strlen(s);
+	while (nospace_token(d->line) != -42)
+		d->line = realloc_space(d->line, ft_strlen(d->line), nospace_token(d->line));
+	n = ft_strlen(d->line);
 	tokens = ft_calloc(n + 1, sizeof(char *));
 	while (++i[0] <= n)
 	{
-		if ((s[i[0]] == ' ' || s[i[0]] == '\0') && !quotes[0] && !quotes[1])
-			lexhelp(d, s, tokens, i);
-		else if (s[i[0]] == '\'')
+		if ((d->line[i[0]] == ' ' || d->line[i[0]] == '\0') && !quotes[0] && !quotes[1])
+			lexhelp(d, d->line, tokens, i);
+		else if (d->line[i[0]] == '\'')
 			quotes[0] = !quotes[0];
-		else if (s[i[0]] == '\"')
+		else if (d->line[i[0]] == '\"')
 			quotes[1] = !quotes[1];
 	}	
 	return (tokens);
@@ -116,7 +118,7 @@ void	lexer(t_data *d)
 	int		i;
 
 	i = -1;
-	tmp = parse_input(d, d->line);
+	tmp = parse_input(d);
 	while (tmp[++i])
 		lexadd_back(&d->lex, lexnew(ft_strdup(tmp[i])));
 	expander(d, &d->lex);

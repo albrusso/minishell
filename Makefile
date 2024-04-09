@@ -6,7 +6,7 @@
 #    By: albrusso <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:14:01 by albrusso          #+#    #+#              #
-#    Updated: 2024/04/04 18:07:48 by albrusso         ###   ########.fr        #
+#    Updated: 2024/04/09 15:27:15 by albrusso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,10 @@ SRC		=	src/main.c \
 			src/builtin/mini_export.c \
 			src/builtin/mini_pwd.c \
 			src/builtin/mini_unset.c \
-			src/builtin/builtin_utils.c
+			src/builtin/builtin_utils.c \
+			src/redirection/redirection.c \
+			src/redirection/redirect_in.c \
+			src/redirection/redirect_out.c
 
 OBJ		=	$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
@@ -80,6 +83,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/src/parser
 	@mkdir -p $(OBJ_DIR)/src/executer
 	@mkdir -p $(OBJ_DIR)/src/builtin
+	@mkdir -p $(OBJ_DIR)/src/redirection
 
 clean:
 	@make clean -sC mylib
