@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:46:58 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 18:00:49 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/08 14:48:59 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*try_expand_utils(char *res, char **env, char *s, int *i)
 			{
 				res = ft_strjoin_gnl(res, ft_strchr(env[j], '=') + 1);
 				*i = startend[1] - 1;
-				break;
+				break ;
 			}
 		}
 		if (res[0] == '\0')
@@ -57,7 +57,7 @@ char	*try_expand_utils(char *res, char **env, char *s, int *i)
 	return (res);
 }
 
-char *try_expand(char *env[], char *s)
+char	*try_expand(char *env[], char *s)
 {
 	char	*res;
 	int		i;
@@ -70,7 +70,7 @@ char *try_expand(char *env[], char *s)
 			res = try_expand_utils(res, env, s, &i);
 		else
 		{
-			char str[2] = {s[i], '\0'};
+			char	str[2] = {s[i], '\0'};
 			res = ft_strjoin_gnl(res, str);
 		}
 	}
@@ -94,5 +94,4 @@ void	expander(t_data *d, t_lexer **lex)
 		}
 		tmp = tmp->n;
 	}
-	
 }

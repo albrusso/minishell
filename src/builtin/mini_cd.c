@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:21:04 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 15:25:11 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/08 13:37:54 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,23 @@ int	cd_setchange(t_data *d)
 	return (0);
 }
 
+int	arrlen(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
+}
+
 int	mini_cd(t_data *d, char **cmd)
 {
 	int		ret;
 	char	*tmp;
 
 	tmp = mini_getenv(d->env, "HOME");
-	if (cmd && cmd[2])
+	if (cmd && arrlen(cmd) > 2)
 		ret = cd_error(42, NULL);
 	else if (!tmp && !cmd[1])
 		ret = cd_error(-42, NULL);

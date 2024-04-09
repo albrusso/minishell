@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/05 17:57:37 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/08 17:18:41 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <readline/history.h>
 # include <stdbool.h>
 
-extern int g_exit;
+extern int	g_exit;
 
 typedef struct s_message
 {
@@ -60,65 +60,60 @@ typedef struct s_data
 	int			exit;
 	int			end[2];
 	int			pid;
+	bool		restart;
 	t_lexer		*lex;
 	t_parser	*pars;
 }		t_data;
 
-void	signal_handler(int sig);
-void	signal_print(int sig);
+void		signal_handler(int sig);
+void		signal_print(int sig);
 
+void		t_data_init(t_data *d, char **envp);
+void		t_data_free(t_data *d, bool _exit);
 
+char		*mini_getenv(char **env, char *s);
+void		mini_setenv(t_data *d, const char *s1, char *s2);
+char		**dup_env(char **envp);
+char		*relative_path(char *s1, char *s2);
+void		free_env(char **env);
+char		**realloc_copy(char **arr, int size);
 
-void	t_data_init(t_data *d, char **envp);
-void	t_data_free(t_data *d, bool _exit);
+void		executer(t_data *d, struct s_parser *cmds);
 
-char	*mini_getenv(char **env, char *s);
-void	mini_setenv(t_data *d, const char *s1, char *s2);
-char	**dup_env(char **envp);
-char	*relative_path(char *s1, char *s2);
-void	free_env(char **env);
-char	**realloc_copy(char **arr, int size);
+void		t_message_init(t_message *msg, char **env);
+void		t_message_free(t_message *m);
 
-void executer(t_data *d, struct s_parser *cmds);
+void		t_lexer_free(t_lexer **lex);
+void		lexadd_back(t_lexer **lex, t_lexer *new);
+t_lexer		*lexlast(t_lexer *lex);
+t_lexer		*lexnew(char *s);
 
-void	t_message_init(t_message *msg, char **env);
-void	t_message_free(t_message *m);
+void		lexer(t_data *d);
+void		lex_print(t_lexer **lex);
 
-void	t_lexer_free(t_lexer **lex);
-void	lexadd_back(t_lexer **lex, t_lexer *new);
-t_lexer	*lexlast(t_lexer *lex);
-t_lexer	*lexnew(char *s);
+void		expander(t_data *d, t_lexer **lex);
 
-void	lexer(t_data *d);
-void	lex_print(t_lexer **lex);
+void		free_array(char **arr);
 
-
-void	expander(t_data *d, t_lexer **lex);
-
-void	free_array(char **arr);
-
-void	parser(t_data *d);
+void		parser(t_data *d);
 
 t_parser	*parsnew(char **cmd, t_lexer *redir);
 t_parser	*parslast(t_parser *pars);
-void	parsadd_back(t_parser **pars, t_parser *new);
-void	t_parser_free(t_parser **pars);
+void		parsadd_back(t_parser **pars, t_parser *new);
+void		t_parser_free(t_parser **pars);
 
-int	mini_cd(t_data *d, char **cmd);
-int	mini_echo(char **cmd);
-int	mini_env(char **env, char **path);
-int	mini_export(t_data *d, char **cmd);
-int	mini_pwd(char *s);
-int	mini_unset(t_data *d, char **cmd);
-int	is_builtin(char *s);
-int	execute_builtin(t_data *d, char **cmd);
-void	mini_error(char *s);
+int			mini_cd(t_data *d, char **cmd);
+int			mini_echo(char **cmd);
+int			mini_env(char **env, char **path);
+int			mini_export(t_data *d, char **cmd);
+int			mini_pwd(char *s);
+int			mini_unset(t_data *d, char **cmd);
+int			is_builtin(char *s);
+int			execute_builtin(t_data *d, char **cmd);
+void		mini_error(char *s);
 
+int			parslst_size(t_parser *lst);
 
-int	parslst_size(t_parser *lst);
-
-void execute_pipeline(t_parser *head);
-
-
+int			arrlen(char **arr);
 
 #endif

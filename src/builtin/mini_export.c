@@ -6,11 +6,28 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:37:32 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 14:31:29 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/08 15:04:18 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+char	*env_value(char *s, char *tmp1)
+{
+	char	*tmp2;
+	int		i;
+
+	i = 0;
+	if (tmp1)
+	{
+		while (s[i] && s[i] != '=')
+			i++;
+		tmp2 = ft_substr(s, 0, i - 1);
+	}
+	else
+		tmp2 = ft_strdup(s);
+	return (tmp2);
+}
 
 void	export_inenv(t_data *d, char *s)
 {
@@ -19,24 +36,16 @@ void	export_inenv(t_data *d, char *s)
 	int		i;
 
 	tmp1 = ft_strchr(s, '=');
-	i = 0;
-	if (tmp1)
-	{
-		while (s[i] && s[i] != '=')
-			i++;
-		tmp2 = ft_substr(s, 0, i);
-	}
-	else
-		tmp2 = ft_strdup(s);
+	tmp2 = env_value(s, tmp1);
 	i = -1;
 	while (d->env[++i])
 	{
 		if (!ft_strncmp(d->env[i], tmp2, ft_strlen(tmp2)))
 		{
 			free(d->env[i]);
-			if (tmp1)
+			if (tmp1 && !ft_strchr(tmp2, '='))
 				tmp2 = ft_strjoin_gnl(tmp2, "=");
-			d->env[i] = ft_strjoin(tmp2, tmp1);
+			d->env[i] = ft_strjoin_gnl(tmp2, tmp1);
 			return ;
 		}
 	}

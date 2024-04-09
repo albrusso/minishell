@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:09:43 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/05 14:20:12 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/08 14:51:13 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char	**dup_env(char **envp)
 		env[i] = ft_strdup(envp[i]);
 		i++;
 	}
+	env[i] = NULL;
 	return (env);
 }
 
@@ -53,10 +54,10 @@ char	*relative_path(char *s1, char *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	if (!ft_strncmp(s1, s2, ft_strlen(s1)))
-		s3 = ft_strdup(s2 + ft_strlen(s1) + 1);
+		s3 = ft_substr(s2, ft_strlen(s1), ft_strlen(s2));
 	else
 		s3 = ft_strdup(s2);
-	if (!ft_strncmp(s3, s1, ft_strlen(s1)))
+	if (!ft_strncmp(s3, s1, ft_strlen(s3)))
 		s4 = ft_strjoin("~", NULL);
 	else
 		s4 = ft_strjoin("~", s3);
@@ -68,7 +69,7 @@ char	**realloc_copy(char **arr, int size)
 {
 	char	**tmp;
 	int		i;
-	
+
 	tmp = ft_calloc(size, sizeof(char *));
 	i = -1;
 	while (arr[++i])

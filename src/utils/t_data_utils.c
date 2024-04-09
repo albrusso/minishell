@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:04:43 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 17:25:37 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/08 17:24:18 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	t_data_free(t_data *d, bool _exit)
 		if (d->pwd)
 			free(d->pwd);
 		if (d->oldpwd)
-		 	free(d->oldpwd);
+			free(d->oldpwd);
 		rl_clear_history();
 		ft_putendl_fd("exit", STDOUT_FILENO);
 	}
@@ -62,4 +62,5 @@ void	t_data_init(t_data *d, char **envp)
 	d->in = dup(STDIN_FILENO);
 	d->out = dup(STDOUT_FILENO);
 	d->exit = 0;
+	d->restart = false;
 }

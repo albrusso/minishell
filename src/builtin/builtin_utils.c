@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:15:22 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 17:39:41 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/08 14:41:10 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,16 @@ int	is_builtin(char *s)
 int	execute_builtin(t_data *d, char **cmd)
 {
 	if (!ft_strncmp(cmd[0], "cd", 2))
-		return(mini_cd(d, cmd));
+		return (mini_cd(d, cmd));
 	else if (!ft_strncmp(cmd[0], "echo", 4))
-		return(mini_echo(cmd));
+		return (mini_echo(cmd));
 	else if (!ft_strncmp(cmd[0], "env", 3))
-		return(mini_env(d->env, d->path));
+		return (mini_env(d->env, d->path));
 	else if (!ft_strncmp(cmd[0], "export", 6))
-		return(mini_export(d, cmd));
+		return (mini_export(d, cmd));
 	else if (!ft_strncmp(cmd[0], "pwd", 3))
-		return(mini_pwd(d->pwd));
+		return (mini_pwd(d->pwd));
 	else if (!ft_strncmp(cmd[0], "unset", 5))
-		return(mini_unset(d, cmd));
+		return (mini_unset(d, cmd));
 	return (0);
 }

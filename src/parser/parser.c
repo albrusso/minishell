@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:34:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 15:12:23 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/08 14:50:13 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ void	fill_cmdredir(t_data *d, char **cmd, t_lexer *lex)
 		}
 		lex = lex->n;
 	}
-	parsadd_back(&d->pars, parsnew(dup_env(cmd), redir));
+	cmd[i] = NULL;
+	parsadd_back(&d->pars, parsnew(cmd, redir));
 	d->lex = lex;
 	free_array(cmd);
 }
@@ -122,6 +123,5 @@ void	parser(t_data *d)
 		fill_cmdredir(d, cmd, tmp);
 		tmp = d->lex;
 	}
-	//pars_print(&d->pars);
 	d->lex = head;
 }

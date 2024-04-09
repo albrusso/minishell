@@ -6,13 +6,13 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:01:23 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/05 17:57:29 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/08 17:24:08 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int g_exit = 0;
+int	g_exit = 0;
 
 void	run_shell(t_data *d, t_message *m);
 
@@ -39,15 +39,16 @@ void	clean_exit(t_data *d, t_message *m, bool _exit)
 	if (_exit)
 		exit(g_exit);
 	else
+	{
+		d->restart = true;
 		run_shell(d, m);
+	}
 }
 
 void	run_shell(t_data *d, t_message *m)
 {
 	char	*tmp;
-	int		i;
 
-	i = 0;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 	t_message_init(m, d->env);
@@ -62,13 +63,13 @@ void	run_shell(t_data *d, t_message *m)
 	add_history(d->line);
 	lexer(d);
 	parser(d);
-	executer(d, d->pars);
+	//executer(d, d->pars);
 	clean_exit(d, m, false);
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	t_data	d;
+	t_data		d;
 	t_message	m;
 
 	if (ac != 1 || av[1])

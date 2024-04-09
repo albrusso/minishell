@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:57:41 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/26 17:44:42 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/08 14:52:06 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	t_message_free(t_message *m)
 {
-	 if (m->dir)
-	 	free(m->dir);
+	if (m->dir)
+		free(m->dir);
 	if (m->msg)
 		free(m->msg);
 }

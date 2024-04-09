@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:17:38 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/03 17:24:36 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/08 14:41:18 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	mini_echo(char **cmd)
 	while (cmd[++i])
 	{
 		printf("%s", cmd[i]);
-		if (cmd[i + i])
+		if (cmd[i + 1])
 			printf(" ");
 	}
 	if (!flag)
