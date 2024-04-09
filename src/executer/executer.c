@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:16:10 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/09 15:48:42 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:14:01 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,28 @@ void	try_execute(t_data *d, t_parser *p, char **cmd)
 		execute_builtin(d, p, cmd);
 	else
 		execvp(cmd[0], cmd);
+}
+
+void	child1(t_data *d, t_parser *p)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	if (p->redir)
+		open_redirect(d, p);
+}
+
+void	cmd_pipe(t_data *d, t_parser *p)
+{
+	d->pid = fork();
+	if (d->pid < 0)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	if (d->pid == 0)
+		child1(d, p);
+	else
+		child2(d, p);
 }
 
 void	executer(t_data *d, t_parser *p)

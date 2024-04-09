@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/09 15:46:35 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:09:15 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ typedef struct s_data
 	int			in;
 	int			out;
 	int			exit;
-	int			end[2];
 	int			pid;
+	int			end[2];
 	bool		restart;
 	t_lexer		*lex;
 	t_parser	*pars;
