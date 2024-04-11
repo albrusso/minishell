@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:46:58 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/09 14:52:40 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/11 17:58:20 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*try_expand_utils(char *res, char **env, char *s, int *i)
 
 	startend[0] = *i + 1;
 	startend[1] = startend[0];
-	while (s[startend[1]] && s[startend[1]] != '$')
+	while (s[startend[1]] && ft_isalnum(s[startend[1]]))
 		++startend[1];
 	if (startend[0] != startend[1])
 	{
@@ -72,13 +72,17 @@ char	*try_expand(char *env[], char *s)
 {
 	char	*res;
 	char	*tmp;
+	bool	dquote;
 	int		i;
 
 	i = -1;
+	dquote = false;
 	res = ft_calloc(1, sizeof(char));
 	while (s[++i])
 	{
-		if (s[i] == '\'')
+		if (s[i] == '"')
+			dquote = !dquote;
+		else if (s[i] == '\'' && dquote == false)
 		{
 			i++;
 			while (s[i] && s[i] != '\'')

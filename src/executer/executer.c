@@ -6,11 +6,21 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:16:10 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/10 13:35:41 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/11 13:47:48 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+void	error_foundcmd(t_parser *p)
+{
+	write(STDERR_FILENO, "Command not found: ", 20);
+	if (p->cmd[0])
+		write(STDERR_FILENO, p->cmd[0], ft_strlen(p->cmd[0]));
+	else
+		write(STDERR_FILENO, "\'\'", 3);
+	write(STDERR_FILENO, "\n", 2);
+}
 
 void	execute_onecmd(t_data *d, t_parser *p)
 {
@@ -34,6 +44,9 @@ void	execute_onecmd(t_data *d, t_parser *p)
 				free(tmp);
 			}
 		}
+		error_foundcmd(p);
+		g_exit = 127;
+		clean_exit(d, &d->m, true);
 	}
 }
 
@@ -54,36 +67,6 @@ void	wait_child(t_data *d)
 	else if (WIFSIGNALED(status))
 		g_exit = WTERMSIG(status) + 128;
 }
-
-void	child2(t_data *d, t_parser *p)
-{
-	close(d->end[1]);
-	if (p->cmd[0])
-	{
-		dup2(d->end[0], STDIN_FILENO);
-		close(d->end[0]);
-	}
-	close_redirect(p);
-	wait_child(d);
-}
-
-void	child1(t_data *d, t_parser *p)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	if (p->redir)
-		open_redirect(d, p);
-	if (p->n)
-		set_piperedirect(d, p);
-	else
-		set_redirect(p);
-	if (is_builtin(p->cmd[0]))
-		g_exit = execute_builtin(d, p, p->cmd);
-	else
-		execute_onecmd(d, p);
-	
-}
-
 
 void	parent_process(t_data *d, t_parser *p)
 {
@@ -126,12 +109,12 @@ void	child_process(t_data *d, t_parser *p)
 		close_redirect(p);
 		if (p->n)
 			close(d->end[0]);
-		clean_exit(d, NULL, true);
+		clean_exit(d, &d->m, true);
 	}
 	else if (p->n)
 		set_piperedirect(d, p);
 	else
-		open_redirect(d, p);
+		set_redirect(p);
 	if (is_builtin(p->cmd[0]))
 		exec_builtin_fork(d, p);
 	else if (p->exe == true)
@@ -154,21 +137,26 @@ void	cmd_pipe(t_data *d, t_parser *p)
 
 void	executer(t_data *d, t_parser *p)
 {
-	if (parslst_size(p) == 1 && is_builtin(p->cmd[0]))
+	t_parser *tmp;
+
+	tmp = p;
+	while (tmp)
 	{
-		open_redirect(d, p);
-		set_redirect(p);
-		execute_builtin(d, p, p->cmd);
-		return ;
-	}
-	while (p)
-	{
-		if (pipe(d->end) == -1)
+		if (tmp->n)
 		{
-			perror("pipe");
-			exit(EXIT_FAILURE);
+			
+			if (pipe(d->end) == -1)
+			{
+				perror("pipe");
+				exit(EXIT_FAILURE);
+			}
 		}
-		cmd_pipe(d, p);
-		p = p->n;
+		if (!tmp->n && is_builtin(tmp->cmd[0]))
+			execute_builtin(d, tmp, tmp->cmd);
+		else
+			cmd_pipe(d, tmp);
+		tmp = tmp->n;
 	}
+	dup2(d->in, STDIN_FILENO);
+	dup2(d->out, STDOUT_FILENO);
 }

@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:20:29 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/10 12:48:34 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/11 12:41:28 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ void	set_redirect(t_parser *p)
 void	set_piperedirect(t_data *d, t_parser *p)
 {
 	close(d->end[0]);
-	if (p->fd_in > -1)
+	if (p->fd_in > -42)
 	{
 		dup2(p->fd_in, STDIN_FILENO);
 		close(p->fd_in);
 	}
-	if (p->fd_out > -1)
+	if (p->fd_out > -42)
 	{
 		dup2(p->fd_out, STDOUT_FILENO);
 		close(p->fd_out);

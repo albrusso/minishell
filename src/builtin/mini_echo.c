@@ -6,13 +6,13 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:17:38 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/09 15:45:15 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/11 16:38:36 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	mini_echo(char **cmd, int fd)
+int	mini_echo(char **cmd)
 {
 	int		i;
 	bool	flag;
@@ -26,11 +26,11 @@ int	mini_echo(char **cmd, int fd)
 	}
 	while (cmd[++i])
 	{
-		write(fd, cmd[i], ft_strlen(cmd[i]));
+		ft_putstr_fd(cmd[i], STDOUT_FILENO);
 		if (cmd[i + 1])
-			printf(" ");
+			ft_putstr_fd(" ", STDOUT_FILENO);
 	}
 	if (!flag)
-		printf("\n");
+		ft_putstr_fd("\n", STDOUT_FILENO);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/10 12:49:33 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/11 13:50:33 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_data
 	bool		restart;
 	t_lexer		*lex;
 	t_parser	*pars;
+	t_message	m;
 }		t_data;
 
 
@@ -108,7 +109,7 @@ void		parsadd_back(t_parser **pars, t_parser *new);
 void		t_parser_free(t_parser **pars);
 
 int			mini_cd(t_data *d, char **cmd);
-int			mini_echo(char **cmd, int fd);
+int			mini_echo(char **cmd);
 int			mini_env(char **env, char **path);
 int			mini_export(t_data *d, char **cmd);
 int			mini_pwd(char *s);
