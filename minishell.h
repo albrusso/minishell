@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/09 16:09:15 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/10 12:49:33 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_parser
 	char			**cmd;
 	int				fd_in;
 	int				fd_out;
+	bool			exe;
 	t_lexer			*redir;
 	struct s_parser	*n;
 }		t_parser;
@@ -65,6 +66,9 @@ typedef struct s_data
 	t_lexer		*lex;
 	t_parser	*pars;
 }		t_data;
+
+
+void	clean_exit(t_data *d, t_message *m, bool _exit);
 
 void		signal_handler(int sig);
 void		signal_print(int sig);
@@ -125,6 +129,8 @@ int	heredoc(t_data *d, char *s);
 void	open_heredoc(t_data *d, t_parser *p, char *s);
 void	set_redirect(t_parser *p);
 
+void	close_redirect(t_parser *p);
+void	set_piperedirect(t_data *d, t_parser *p);
 
 
 #endif

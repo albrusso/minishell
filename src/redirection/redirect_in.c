@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 15:12:55 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/09 15:28:16 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/10 12:52:43 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	open_input(t_parser *p, char *s)
 	{
 		perror(&s[3]);
 		g_exit = 1;
+		p->exe = false;
 	}
 }
 
@@ -61,5 +62,6 @@ void	open_heredoc(t_data *d, t_parser *p, char *s)
 	{
 		perror(&s[4]);
 		g_exit = 1;
+		p->exe = false;
 	}
 }

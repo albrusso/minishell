@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 15:07:54 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/09 15:40:51 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/10 12:52:30 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	open_output(t_parser *p, char *s)
 	{
 		perror(&s[3]);
 		g_exit = 1;
+		p->exe = false;
 	}
 }
 
@@ -33,5 +34,6 @@ void	open_append(t_parser *p, char *s)
 	{
 		perror(&s[4]);
 		g_exit = 1;
+		p->exe = false;
 	}
 }

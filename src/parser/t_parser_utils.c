@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:30:34 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/09 15:03:46 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/10 12:48:51 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_parser	*parsnew(char **cmd, t_lexer *redir)
 	new->cmd = dup_env(cmd);
 	new->fd_in = -42;
 	new->fd_out = -42;
+	new->exe = true;
 	new->redir = NULL;
 	if (redir)
 		new->redir = redir;
