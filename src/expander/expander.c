@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:46:58 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/11 17:58:20 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/12 16:56:57 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ char	*try_expand_utils(char *res, char **env, char *s, int *i)
 		j = -1;
 		while (env[++j])
 		{
-			if (ft_strchr(env[j], '=') && !ft_strncmp(env[j], tmp, ft_strlen(tmp)))
+			if (ft_strchr(env[j], '=')
+				&& !ft_strncmp(env[j], tmp, ft_strlen(tmp)))
 			{
 				res = ft_strjoin_gnl(res, ft_strchr(env[j], '=') + 1);
 				*i = startend[1] - 1;
@@ -71,7 +72,6 @@ char	*try_expand_g_exit(char *res, int *i)
 char	*try_expand(char *env[], char *s)
 {
 	char	*res;
-	char	*tmp;
 	bool	dquote;
 	int		i;
 
@@ -82,18 +82,8 @@ char	*try_expand(char *env[], char *s)
 	{
 		if (s[i] == '"')
 			dquote = !dquote;
-		else if (s[i] == '\'' && dquote == false)
-		{
-			i++;
-			while (s[i] && s[i] != '\'')
-			{
-				tmp = ft_calloc(2, 1);
-				ft_strlcpy(tmp, &s[i], 1);
-				res = ft_strjoin_gnl(res, tmp);
-				free(tmp);
-				i++;
-			}
-		}
+		else if (s[i] == '\'' && !dquote)
+			res = copy_insidequote(res, s, &i);
 		else if (s[i] == '$')
 		{
 			if (s[i + 1] == '?')
@@ -102,16 +92,49 @@ char	*try_expand(char *env[], char *s)
 				res = try_expand_utils(res, env, s, &i);
 		}
 		else
-		{
-			tmp = ft_calloc(2, 1);
-			ft_strlcpy(tmp, &s[i], 1);
-			res = ft_strjoin_gnl(res, tmp);
-			free(tmp);
-		}
+			res = copy_char(res, s, i);
 	}
 	return (res);
 }
 
+char	*delete_and_replace(char *s, char c1, char c2)
+{
+	int		len;
+	int		ij[2];
+	bool	quote;
+	char	*result;
+
+	quote = false;
+	len = ft_strlen(s);
+	result = (char *)ft_calloc(len + 1, sizeof(char));
+	ij[0] = -1;
+	ij[1] = 0;
+	while (s[++ij[0]])
+	{
+		if (s[ij[0]] == c2)
+			quote = !quote;
+		else if ((s[ij[0]] == c1 && quote) || s[ij[0]] != c1)
+		{
+			result[ij[1]] = s[ij[0]];
+			ij[1]++;
+		}
+	}
+	free(s);
+	return (result);
+}
+
+int	i_strchr(char *s, char c)
+{
+	int	i;
+
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] == c)
+			return (i);
+	}
+	return (INT_MAX);
+}
 
 void	expander(t_data *d, t_lexer **lex)
 {
@@ -130,10 +153,10 @@ void	expander(t_data *d, t_lexer **lex)
 		}
 		else
 		{
-			tmp1 = ft_strdup(tmp->s);
-			free(tmp->s);
-			tmp->s = ft_strtrim(tmp1, "\"");
-			free(tmp1);
+			if (i_strchr(tmp->s, '\'') < i_strchr(tmp->s, '"'))
+				tmp->s = delete_and_replace(tmp->s, '"', '\'');
+			else
+				tmp->s = delete_and_replace(tmp->s, '\'', '"');
 		}
 		tmp = tmp->n;
 	}

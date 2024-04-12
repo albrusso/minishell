@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:01:23 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/11 17:37:05 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:10:36 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	run_shell(t_data *d)
 		clean_exit(d, &d->m, false);
 	add_history(d->line);
 	lexer(d);
+	//lex_print(&d->lex);
 	parser(d);
 	executer(d, d->pars);
 	clean_exit(d, &d->m, false);

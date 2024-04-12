@@ -1,36 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_echo.c                                        :+:      :+:    :+:   */
+/*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/03 17:17:38 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/12 14:24:47 by albrusso         ###   ########.fr       */
+/*   Created: 2024/04/12 12:05:45 by albrusso          #+#    #+#             */
+/*   Updated: 2024/04/12 16:57:09 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	mini_echo(char **cmd)
+char	*copy_char(char *res, char *s, int i)
 {
-	int		i;
-	bool	flag;
+	char	*tmp;
 
-	i = 0;
-	flag = false;
-	if (cmd[1] && !ft_strncmp(cmd[1], "-n", 2))
+	tmp = ft_calloc(2, sizeof(char));
+	ft_strlcpy(tmp, &s[i], 1);
+	res = ft_strjoin_gnl(res, tmp);
+	free(tmp);
+	return (res);
+}
+
+char	*copy_insidequote(char *res, char *s, int *i)
+{
+	*i = *i + 1;
+	while (s[*i] && s[*i] != '\'')
 	{
-		flag = true;
-		i++;
+		res = copy_char(res, s, *i);
+		*i = *i + 1;
 	}
-	while (cmd[++i])
-	{
-		ft_putstr_fd(cmd[i], STDOUT_FILENO);
-		if (cmd[i + 1])
-			ft_putstr_fd(" ", STDOUT_FILENO);
-	}
-	if (!flag)
-		ft_putstr_fd("\n", STDOUT_FILENO);
-	return (0);
+	return (res);
 }

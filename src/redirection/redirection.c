@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:20:29 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/11 12:41:28 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/12 17:00:04 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	open_redirect(t_data *d, t_parser *p)
 		else if (!ft_strncmp(tmp->s, "<", 1))
 			open_input(p, tmp->s);
 		tmp = tmp->n;
-	}	
+	}
 }
 
 void	set_redirect(t_parser *p)

@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/11 13:50:33 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/12 16:36:10 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
+# include <limits.h>
 
 extern int	g_exit;
 
@@ -132,6 +133,13 @@ void	set_redirect(t_parser *p);
 
 void	close_redirect(t_parser *p);
 void	set_piperedirect(t_data *d, t_parser *p);
+
+char	*copy_char(char *res, char *s, int i);
+char	*copy_insidequote(char *res, char *s, int *i);
+
+char **mini_split(char *s);
+char	**trim_quote(char **a);
+
 
 
 #endif

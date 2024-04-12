@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 17:26:53 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/09 14:52:51 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/12 16:58:19 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	nospace_token(char *s)
 			if (i > 0 && s[i - 1] != ' ' && !is_redirect(s[i - 1]))
 				return (i - 1);
 			if (s[i + 1] != ' ' && !is_redirect(s[i + 1]))
-				return(i);
+				return (i);
 		}
 	}
 	return (-42);
@@ -88,27 +88,28 @@ void	lexhelp(t_data *d, char *s, char **a, int i[2])
 char	**parse_input(t_data *d)
 {
 	char	**tokens;
-	int		quotes[2];
+	bool	quotes[2];
 	int		i[2];
 	int		n;
 
 	i[0] = -1;
 	i[1] = 0;
-	quotes[0] = 0;
-	quotes[1] = 0;
+	quotes[0] = false;
+	quotes[1] = false;
 	while (nospace_token(d->line) != -42)
 		d->line = realloc_space(d->line, ft_strlen(d->line), nospace_token(d->line));
 	n = ft_strlen(d->line);
 	tokens = ft_calloc(n + 1, sizeof(char *));
 	while (++i[0] <= n)
 	{
-		if ((d->line[i[0]] == ' ' || d->line[i[0]] == '\0') && !quotes[0] && !quotes[1])
+		if ((d->line[i[0]] == ' ' || d->line[i[0]] == '\0')
+			&& !quotes[0] && !quotes[1])
 			lexhelp(d, d->line, tokens, i);
-		else if (d->line[i[0]] == '\'')
+		else if (d->line[i[0]] == '\'' && !quotes[1])
 			quotes[0] = !quotes[0];
 		else if (d->line[i[0]] == '\"')
 			quotes[1] = !quotes[1];
-	}	
+	}
 	return (tokens);
 }
 
@@ -125,6 +126,5 @@ void	lexer(t_data *d)
 	i = -1;
 	while (tmp[++i])
 		free(tmp[i]);
-	//lex_print(&d->lex);
 	free(tmp);
 }

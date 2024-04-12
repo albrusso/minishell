@@ -6,7 +6,7 @@
 #    By: albrusso <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:14:01 by albrusso          #+#    #+#              #
-#    Updated: 2024/04/09 15:27:15 by albrusso         ###   ########.fr        #
+#    Updated: 2024/04/12 12:09:09 by albrusso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ SRC		=	src/main.c \
 			src/lexer/t_lexer_utils.c \
 			src/lexer/lexer.c \
 			src/expander/expander.c \
+			src/expander/expander_utils.c \
 			src/parser/parser.c \
 			src/parser/t_parser_utils.c \
 			src/executer/executer.c \

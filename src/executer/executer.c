@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:16:10 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/11 13:47:48 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/12 16:54:53 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	try_execute(t_data *d, t_parser *p, char **cmd)
 void	wait_child(t_data *d)
 {
 	int	status;
+
 	waitpid(d->pid, &status, 0);
 	if (WIFEXITED(status))
 		g_exit = WEXITSTATUS(status);
@@ -90,7 +91,6 @@ void	parent_process(t_data *d, t_parser *p)
 	close_redirect(p);
 	wait_child(d);
 }
-
 
 void	exec_builtin_fork(t_data *d, t_parser *p)
 {
@@ -137,14 +137,13 @@ void	cmd_pipe(t_data *d, t_parser *p)
 
 void	executer(t_data *d, t_parser *p)
 {
-	t_parser *tmp;
+	t_parser	*tmp;
 
 	tmp = p;
 	while (tmp)
 	{
 		if (tmp->n)
 		{
-			
 			if (pipe(d->end) == -1)
 			{
 				perror("pipe");
