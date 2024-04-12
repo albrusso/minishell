@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 17:26:53 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/12 16:58:19 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/12 18:32:29 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,20 @@ char	**parse_input(t_data *d)
 	return (tokens);
 }
 
+void	check_lexer(t_data *d)
+{
+	t_lexer	*tmp;
+
+	tmp = d->lex;
+	while (tmp)
+	{
+		if (tmp->s[0] == '|')
+			error_syntax_token(d, "|");
+		tmp = tmp->n;
+	}
+	
+}
+
 void	lexer(t_data *d)
 {
 	char	**tmp;
@@ -122,6 +136,7 @@ void	lexer(t_data *d)
 	tmp = parse_input(d);
 	while (tmp[++i])
 		lexadd_back(&d->lex, lexnew(ft_strdup(tmp[i])));
+	check_lexer(d);
 	expander(d, &d->lex);
 	i = -1;
 	while (tmp[++i])

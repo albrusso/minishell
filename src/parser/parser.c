@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:34:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/09 12:24:37 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/12 18:23:42 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,9 @@ void	fill_cmdredir(t_data *d, char **cmd, t_lexer *lex)
 			lex = lex->n;
 		}
 		else
-		{
-			cmd[i] = ft_strdup(lex->s);
-			i++;
-		}
+			cmd[i++] = ft_strdup(lex->s);
 		lex = lex->n;
 	}
-	cmd[i] = NULL;
 	parsadd_back(&d->pars, parsnew(cmd, redir));
 	d->lex = lex;
 	free_array(cmd);
