@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 17:26:53 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 18:09:20 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 18:23:35 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	check_lexer(t_data *d)
 	tmp = d->lex;
 	while (tmp)
 	{
-		if ((tmp->s[0] == '|' && !tmp->n)
+		if ((tmp->s[0] == '|' && !tmp->n) || (tmp->n && tmp->n->s[0] == '|')
 			|| (tmp->s[0] == '|' && !lexindex(&d->lex, tmp)))
 			ret = error_syntax_token(d, "|");
 		else if (is_redir(tmp->s) && ft_strlen(tmp->s) < 3)
@@ -91,7 +91,10 @@ int	lexer(t_data *d)
 		lexadd_back(&d->lex, lexnew(ft_strdup(tmp[i])));
 	free_arr(tmp);
 	if (!check_lexer(d))
+	{
+		g_exit = 2;
 		return (0);
+	}
 	expander(d, &d->lex);
 	return (42);
 }
