@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 17:27:33 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/03 15:08:15 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 17:31:47 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,21 @@ void	t_lexer_free(t_lexer **lex)
 		}
 		*lex = NULL;
 	}
+}
+
+int	lexindex(t_lexer **lex, t_lexer *node)
+{
+	t_lexer	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = *lex;
+	while (tmp)
+	{
+		if (tmp == node)
+			return (i);
+		i++;
+		tmp = tmp->n;
+	}
+	return (-1);
 }

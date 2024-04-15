@@ -6,36 +6,11 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:34:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/12 18:23:42 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:04:37 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void	print_array(char **arr)
-{
-	int	i;
-
-	i = -1;
-	while (arr[++i])
-		printf("%s\n", arr[i]);
-}
-
-void	pars_print(t_parser **pars)
-{
-	t_parser	*tmp;
-
-	tmp = *pars;
-	while (tmp)
-	{
-		printf("+++ cmd +++\n");
-		print_array(tmp->cmd);
-		printf("+++ red +++\n");
-		lex_print(&tmp->redir);
-		printf("---- ----\n");
-		tmp = tmp->n;
-	}
-}
 
 int	size_malloc(t_lexer *lex)
 {
@@ -60,19 +35,6 @@ void	add_redir(t_lexer **redir, char *s1, char *s2)
 	tmp = ft_strjoin_gnl(tmp, s2);
 	lexadd_back(redir, lexnew(ft_strdup(tmp)));
 	free(tmp);
-}
-
-int	is_redir(char *s)
-{
-	if (!ft_strncmp(s, "<", 1))
-		return (1);
-	if (!ft_strncmp(s, "<<", 2))
-		return (1);
-	if (!ft_strncmp(s, ">", 1))
-		return (1);
-	if (!ft_strncmp(s, ">>", 2))
-		return (1);
-	return (0);
 }
 
 void	fill_cmdredir(t_data *d, char **cmd, t_lexer *lex)
@@ -100,7 +62,7 @@ void	fill_cmdredir(t_data *d, char **cmd, t_lexer *lex)
 	}
 	parsadd_back(&d->pars, parsnew(cmd, redir));
 	d->lex = lex;
-	free_array(cmd);
+	free_arr(cmd);
 }
 
 void	parser(t_data *d)

@@ -6,64 +6,11 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:09:43 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/08 14:51:13 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 15:09:57 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void	free_env(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i])
-	{
-		free(env[i]);
-		i++;
-	}
-	free(env);
-}
-
-char	**dup_env(char **envp)
-{
-	char	**env;
-	int		i;
-
-	i = 0;
-	while (envp[i])
-		i++;
-	env = (char **)ft_calloc(i + 1, sizeof(char *));
-	if (!env)
-		return (NULL);
-	i = 0;
-	while (envp[i])
-	{
-		env[i] = ft_strdup(envp[i]);
-		i++;
-	}
-	env[i] = NULL;
-	return (env);
-}
-
-char	*relative_path(char *s1, char *s2)
-{
-	char	*s3;
-	char	*s4;
-
-	if (!s1 || !s2)
-		return (NULL);
-	if (!ft_strncmp(s1, s2, ft_strlen(s1)))
-		s3 = ft_substr(s2, ft_strlen(s1), ft_strlen(s2));
-	else
-		s3 = ft_strdup(s2);
-	if (!ft_strncmp(s3, s1, ft_strlen(s3)))
-		s4 = ft_strjoin("~", NULL);
-	else
-		s4 = ft_strjoin("~", s3);
-	free(s3);
-	return (s4);
-}
 
 char	**realloc_copy(char **arr, int size)
 {
@@ -74,8 +21,22 @@ char	**realloc_copy(char **arr, int size)
 	i = -1;
 	while (arr[++i])
 		tmp[i] = ft_strdup(arr[i]);
-	free_array(arr);
+	free_arr(arr);
 	return (tmp);
+}
+
+char	**get_path(char **env)
+{
+	char	*tmp1;
+	char	**tmp2;
+	int		i;
+
+	tmp1 = mini_getenv(env, "PATH");
+	tmp2 = ft_split(tmp1, ':');
+	i = -1;
+	while (tmp2[++i])
+		tmp2[i] = ft_strjoin_gnl(tmp2[i], "/");
+	return (tmp2);
 }
 
 void	mini_setenv(t_data *d, const char *s1, char *s2)

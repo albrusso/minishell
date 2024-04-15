@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 14:02:18 by albrusso          #+#    #+#             */
-/*   Updated: 2024/03/15 19:55:57 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:50:05 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,11 @@ char	*ft_strtrim(char const *s1, char const *set)
 	j = ft_strlen(s1);
 	while (j > i && ft_check(s1[j - 1], set))
 		j--;
-	strtrimmed = (char *)malloc((j - i + 1));
+	strtrimmed = (char *)ft_calloc((j - i + 1), 1);
 	if (!strtrimmed)
 		return (NULL);
 	k = 0;
 	while (i < j)
 		strtrimmed[k++] = s1[i++];
-	strtrimmed[k] = '\0';
 	return (strtrimmed);
 }

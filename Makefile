@@ -6,7 +6,7 @@
 #    By: albrusso <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:14:01 by albrusso          #+#    #+#              #
-#    Updated: 2024/04/12 12:09:09 by albrusso         ###   ########.fr        #
+#    Updated: 2024/04/15 17:27:54 by albrusso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,28 +38,32 @@ DEFAULT	=	\033[0m
 
 SRC		=	src/main.c \
 			src/utils/env_utils.c \
+			src/utils/error.c \
+			src/utils/signal.c \
 			src/utils/t_data_utils.c \
 			src/utils/t_message_utils.c \
-			src/utils/signal.c \
-			src/lexer/lexer_utils.c \
-			src/lexer/t_lexer_utils.c \
-			src/lexer/lexer.c \
-			src/expander/expander.c \
-			src/expander/expander_utils.c \
+			src/utils/utils.c \
+			src/redirection/redirection.c \
+			src/redirection/redirect_in.c \
+			src/redirection/redirect_out.c \
 			src/parser/parser.c \
 			src/parser/t_parser_utils.c \
+			src/lexer/lexer.c \
+			src/lexer/lexer_utils.c \
+			src/lexer/t_lexer_utils.c \
+			src/lexer/quotes.c \
+			src/expander/expander.c \
+			src/expander/expander_utils.c \
 			src/executer/executer.c \
 			src/executer/pipex.c \
+			src/builtin/builtin.c \
 			src/builtin/mini_cd.c \
 			src/builtin/mini_echo.c \
 			src/builtin/mini_env.c \
+			src/builtin/mini_exit.c \
 			src/builtin/mini_export.c \
 			src/builtin/mini_pwd.c \
-			src/builtin/mini_unset.c \
-			src/builtin/builtin_utils.c \
-			src/redirection/redirection.c \
-			src/redirection/redirect_in.c \
-			src/redirection/redirect_out.c
+			src/builtin/mini_unset.c
 
 OBJ		=	$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 

@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:20:29 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/12 17:00:04 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 18:02:34 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,17 @@ void	close_redirect(t_parser *p)
 		close(p->fd_in);
 	if (p->fd_out > -42)
 		close(p->fd_out);
+}
+
+int	is_redir(char *s)
+{
+	if (!ft_strncmp(s, "<", 1))
+		return (1);
+	if (!ft_strncmp(s, "<<", 2))
+		return (1);
+	if (!ft_strncmp(s, ">", 1))
+		return (1);
+	if (!ft_strncmp(s, ">>", 2))
+		return (1);
+	return (0);
 }

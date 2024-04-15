@@ -6,55 +6,55 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:46:58 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/12 16:56:57 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 17:56:26 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*try_expander_copy(char *res, char *s, int *i, int end)
+char	*try_expand_help(char *res, char *s, char **env, int sei[3])
 {
 	char	*tmp;
+	int		j;
 
-	tmp = ft_calloc(end - (*i) + 1, sizeof(char));
-	ft_memcpy(tmp, s, end - (*i));
-	res = ft_strjoin_gnl(res, tmp);
+	tmp = ft_calloc(sei[1] - sei[0] + 1, 1);
+	ft_memcpy(tmp, &s[sei[0]], sei[1] - sei[0] - 1);
+	j = -1;
+	while (env[++j])
+	{
+		if (ft_strchr(env[j], '=')
+			&& !ft_strncmp(env[j], tmp, ft_strlen(tmp)))
+		{
+			res = ft_strjoin_gnl(res, ft_strchr(env[j], '=') + 1);
+			sei[2] = sei[1] - 1;
+			break ;
+		}
+	}
+	if (res[0] == '\0')
+		res = try_expander_copy(res, &s[sei[2]], &sei[2], sei[1]);
 	free(tmp);
-	*i = end - 1;
 	return (res);
 }
 
 char	*try_expand_utils(char *res, char **env, char *s, int *i)
 {
-	int		startend[2];
-	int		j;
+	int		sei[3];
 	char	*tmp;
 
-	startend[0] = *i + 1;
-	startend[1] = startend[0];
-	while (s[startend[1]] && ft_isalnum(s[startend[1]]))
-		++startend[1];
-	if (startend[0] != startend[1])
+	sei[0] = *i + 1;
+	sei[1] = sei[0];
+	sei[2] = *i;
+	while (s[sei[1]] && ft_isalnum(s[sei[1]]))
+		++sei[1];
+	if (sei[0] != sei[1])
 	{
-		tmp = ft_calloc(startend[1] - startend[0] + 1, 1);
-		ft_memcpy(tmp, &s[startend[0]], startend[1] - startend[0] - 1);
-		j = -1;
-		while (env[++j])
-		{
-			if (ft_strchr(env[j], '=')
-				&& !ft_strncmp(env[j], tmp, ft_strlen(tmp)))
-			{
-				res = ft_strjoin_gnl(res, ft_strchr(env[j], '=') + 1);
-				*i = startend[1] - 1;
-				break ;
-			}
-		}
-		if (res[0] == '\0')
-			res = try_expander_copy(res, &s[*i], &*i, startend[1]);
-		free(tmp);
+		tmp = ft_strdup(res);
+		free(res);
+		res = try_expand_help(tmp, s, env, sei);
 	}
 	else
 		res = ft_strjoin_gnl(res, "$");
+	*i = sei[2];
 	return (res);
 }
 
@@ -95,45 +95,6 @@ char	*try_expand(char *env[], char *s)
 			res = copy_char(res, s, i);
 	}
 	return (res);
-}
-
-char	*delete_and_replace(char *s, char c1, char c2)
-{
-	int		len;
-	int		ij[2];
-	bool	quote;
-	char	*result;
-
-	quote = false;
-	len = ft_strlen(s);
-	result = (char *)ft_calloc(len + 1, sizeof(char));
-	ij[0] = -1;
-	ij[1] = 0;
-	while (s[++ij[0]])
-	{
-		if (s[ij[0]] == c2)
-			quote = !quote;
-		else if ((s[ij[0]] == c1 && quote) || s[ij[0]] != c1)
-		{
-			result[ij[1]] = s[ij[0]];
-			ij[1]++;
-		}
-	}
-	free(s);
-	return (result);
-}
-
-int	i_strchr(char *s, char c)
-{
-	int	i;
-
-	i = -1;
-	while (s[++i])
-	{
-		if (s[i] == c)
-			return (i);
-	}
-	return (INT_MAX);
 }
 
 void	expander(t_data *d, t_lexer **lex)

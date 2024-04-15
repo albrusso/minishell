@@ -1,21 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_utils.c                                    :+:      :+:    :+:   */
+/*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:15:22 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/12 14:24:48 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:21:27 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void	mini_error(char *s)
-{
-	printf("minishell: %s\n", s);
-}
 
 int	is_builtin(char *s)
 {
@@ -24,6 +19,8 @@ int	is_builtin(char *s)
 	else if (!ft_strncmp(s, "echo", 4))
 		return (1);
 	else if (!ft_strncmp(s, "env", 3))
+		return (1);
+	else if (!ft_strncmp(s, "exit", 4))
 		return (1);
 	else if (!ft_strncmp(s, "export", 6))
 		return (1);
@@ -43,7 +40,9 @@ int	execute_builtin(t_data *d, t_parser *p, char **cmd)
 	else if (!ft_strncmp(cmd[0], "echo", 4))
 		return (mini_echo(cmd));
 	else if (!ft_strncmp(cmd[0], "env", 3))
-		return (mini_env(d->env, d->path));
+		return (mini_env(d, d->env, d->path));
+	else if (!ft_strncmp(cmd[0], "exit", 4))
+		return (mini_exit(d, cmd));
 	else if (!ft_strncmp(cmd[0], "export", 6))
 		return (mini_export(d, cmd));
 	else if (!ft_strncmp(cmd[0], "pwd", 3))

@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:30:34 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/10 12:48:51 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:04:53 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_parser	*parsnew(char **cmd, t_lexer *redir)
 	new = (t_parser *)malloc(sizeof(t_parser));
 	if (!new)
 		return (NULL);
-	new->cmd = dup_env(cmd);
+	new->cmd = dup_arr(cmd);
 	new->fd_in = -42;
 	new->fd_out = -42;
 	new->exe = true;
@@ -74,7 +74,7 @@ void	t_parser_free(t_parser **pars)
 			tmp = *pars;
 			*pars = (*pars)->n;
 			if (tmp->cmd)
-				free_array(tmp->cmd);
+				free_arr(tmp->cmd);
 			if (tmp->redir)
 				t_lexer_free(&tmp->redir);
 			free(tmp);

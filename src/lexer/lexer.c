@@ -6,65 +6,11 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 17:26:53 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 14:35:28 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 18:09:20 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void	lex_print(t_lexer **lex)
-{
-	t_lexer	*tmp;
-
-	tmp = *lex;
-	if (!tmp)
-		return ;
-	while (tmp->n)
-	{
-		printf("%s\n", tmp->s);
-		tmp = tmp->n;
-	}
-	printf("%s\n", tmp->s);
-}
-
-char	*realloc_space(char *s, int len, int index)
-{
-	char	*tmp;
-
-	tmp = ft_calloc(len + 2, sizeof(char));
-	ft_strlcpy(tmp, s, index + 1);
-	tmp[index + 1] = ' ';
-	ft_strlcpy(tmp + index + 2, s + index + 1, len);
-	free(s);
-	return (tmp);
-}
-
-int	is_redirect(char c)
-{
-	if (c == '>' || c == '<' || c == '|')
-		return (42);
-	return (0);
-}
-
-int	nospace_token(char *s)
-{
-	int	len;
-	int	i;
-
-	i = -1;
-	len = ft_strlen(s);
-	while (++i < len)
-	{
-		if (is_redirect(s[i]))
-		{
-			if (i > 0 && s[i - 1] != ' ' && !is_redirect(s[i - 1]))
-				return (i - 1);
-			if (s[i + 1] != ' ' && !is_redirect(s[i + 1]))
-				return (i);
-		}
-	}
-	return (-42);
-}
 
 void	lexhelp(t_data *d, char *s, char **a, int i[2])
 {
@@ -96,8 +42,8 @@ char	**parse_input(t_data *d)
 	i[1] = 0;
 	quotes[0] = false;
 	quotes[1] = false;
-	while (nospace_token(d->line) != -42)
-		d->line = realloc_space(d->line, ft_strlen(d->line), nospace_token(d->line));
+	while (nospace(d->line) != -42)
+		d->line = realloc_space(d->line, ft_strlen(d->line), nospace(d->line));
 	n = ft_strlen(d->line);
 	tokens = ft_calloc(n + 1, sizeof(char *));
 	while (++i[0] <= n)
@@ -113,25 +59,28 @@ char	**parse_input(t_data *d)
 	return (tokens);
 }
 
-void	check_lexer(t_data *d)
+int	check_lexer(t_data *d)
 {
 	t_lexer	*tmp;
+	int		ret;
 
+	ret = -42;
 	tmp = d->lex;
 	while (tmp)
 	{
-		if (tmp->s[0] == '|')
-			error_syntax_token(d, "|");
-		else if (is_redirect(tmp->s[0]) && is_redirect(tmp->s[1]) && ft_strlen(tmp->s) < 3)
-			error_syntax_redir();
-		else if (is_redirect(tmp->s[0]) && ft_strlen(tmp->s) < 2)
-			error_syntax_redir();
+		if ((tmp->s[0] == '|' && !tmp->n)
+			|| (tmp->s[0] == '|' && !lexindex(&d->lex, tmp)))
+			ret = error_syntax_token(d, "|");
+		else if (is_redir(tmp->s) && ft_strlen(tmp->s) < 3)
+			ret = error_syntax_token(d, tmp->s);
+		if (!ret)
+			return (ret);
 		tmp = tmp->n;
 	}
-	
+	return (ret);
 }
 
-void	lexer(t_data *d)
+int	lexer(t_data *d)
 {
 	char	**tmp;
 	int		i;
@@ -140,10 +89,9 @@ void	lexer(t_data *d)
 	tmp = parse_input(d);
 	while (tmp[++i])
 		lexadd_back(&d->lex, lexnew(ft_strdup(tmp[i])));
-	check_lexer(d);
+	free_arr(tmp);
+	if (!check_lexer(d))
+		return (0);
 	expander(d, &d->lex);
-	i = -1;
-	while (tmp[++i])
-		free(tmp[i]);
-	free(tmp);
+	return (42);
 }

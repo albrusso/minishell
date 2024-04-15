@@ -1,54 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/11 10:20:33 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 17:33:54 by albrusso         ###   ########.fr       */
+/*   Created: 2024/04/15 14:39:29 by albrusso          #+#    #+#             */
+/*   Updated: 2024/04/15 14:40:53 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../minishell.h"
 
-int	ft_convert(const char *s)
+char	**dup_arr(char **a)
 {
-	int	i;
-	int	j;
+	char	**tmp;
+	int		i;
 
 	i = 0;
-	j = 0;
-	while (s[i] != '\0')
+	while (a[i])
+		i++;
+	tmp = (char **)ft_calloc(i + 1, sizeof(char *));
+	if (!tmp)
+		return (NULL);
+	i = 0;
+	while (a[i])
 	{
-		if (s[i] >= '0' && s[i] <= '9')
-			j = j * 10 + (s[i] - '0');
-		else
-			return (j);
+		tmp[i] = ft_strdup(a[i]);
 		i++;
 	}
-	return (j);
+	tmp[i] = NULL;
+	return (tmp);
 }
 
-int	ft_atoi(const char *s)
+void	free_arr(char **a)
 {
 	int	i;
-	int	res;
-	int	sign;
 
 	i = 0;
-	res = 0;
-	sign = 1;
-	while (s[i] == ' '
-		|| (s[i] >= '\t' && s[i] <= '\r'))
-		i++;
-	if (s[i] == '-')
+	while (a[i])
 	{
-		sign = -sign;
+		free(a[i]);
 		i++;
 	}
-	else if (s[i] == '+')
-		i++;
-	res = ft_convert(&s[i]);
-	return (res * sign);
+	free(a);
 }

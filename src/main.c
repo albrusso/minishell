@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:01:23 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/12 12:10:36 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 18:01:59 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_exit = 0;
 
-void	run_shell(t_data *d);
+int	run_shell(t_data *d);
 
 void	free_array(char **arr)
 {
@@ -30,8 +30,9 @@ void	free_array(char **arr)
 	arr = NULL;
 }
 
-void	clean_exit(t_data *d, t_message *m, bool _exit)
+int	clean_exit(t_data *d, t_message *m, bool _exit)
 {
+	unlink("heredoc");
 	if (d)
 		t_data_free(d, _exit);
 	if (m)
@@ -40,13 +41,13 @@ void	clean_exit(t_data *d, t_message *m, bool _exit)
 		exit(g_exit);
 	else
 	{
-		unlink("heredoc");
 		d->restart = true;
 		run_shell(d);
 	}
+	return (1);
 }
 
-void	run_shell(t_data *d)
+int	run_shell(t_data *d)
 {
 	char	*tmp;
 
@@ -57,16 +58,19 @@ void	run_shell(t_data *d)
 	if (tmp)
 		d->line = ft_strtrim(tmp, " ");
 	free(tmp);
-	if (!d->line || !ft_strncmp(d->line, "exit", 4))
-		clean_exit(d, &d->m, true);
+	if (!d->line)
+		return (printf("exit\n"), clean_exit(d, &d->m, true));
 	if (d->line[0] == '\0')
-		clean_exit(d, &d->m, false);
+		return (clean_exit(d, &d->m, false));
 	add_history(d->line);
-	lexer(d);
-	//lex_print(&d->lex);
+	if (!match_quote(d->line))
+		return (mini_error(d, 1, false));
+	if (!lexer(d))
+		return (clean_exit(d, &d->m, false));
 	parser(d);
 	executer(d, d->pars);
 	clean_exit(d, &d->m, false);
+	return (0);
 }
 
 int	main(int ac, char **av, char **envp)
