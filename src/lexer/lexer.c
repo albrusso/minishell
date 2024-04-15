@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 17:26:53 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/12 18:32:29 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 14:35:28 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,10 @@ void	check_lexer(t_data *d)
 	{
 		if (tmp->s[0] == '|')
 			error_syntax_token(d, "|");
+		else if (is_redirect(tmp->s[0]) && is_redirect(tmp->s[1]) && ft_strlen(tmp->s) < 3)
+			error_syntax_redir();
+		else if (is_redirect(tmp->s[0]) && ft_strlen(tmp->s) < 2)
+			error_syntax_redir();
 		tmp = tmp->n;
 	}
 	
