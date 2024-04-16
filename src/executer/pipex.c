@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:57:42 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 14:59:04 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:03:13 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	parent_process(t_data *d, t_parser *p)
 void	exec_builtin_fork(t_data *d, t_parser *p)
 {
 	g_exit = execute_builtin(d, p, p->cmd);
-	clean_exit(d, NULL, true);
+	clean_exit(d, &d->m, true);
 }
 
 void	child_process(t_data *d, t_parser *p)

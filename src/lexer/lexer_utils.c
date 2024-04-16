@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:03:13 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 17:29:59 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 00:04:07 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,19 @@ int	is_redirect(char c)
 
 int	nospace(char *s)
 {
-	int	len;
-	int	i;
+	int		i;
+	bool	quotes[2];
 
 	i = -1;
-	len = ft_strlen(s);
-	while (++i < len)
+	quotes[0] = false;
+	quotes[1] = false;
+	while (s[++i])
 	{
-		if (is_redirect(s[i]))
+		if (s[i] == '\'' && !quotes[1])
+			quotes[0] = !quotes[0];
+		else if (s[i] == '"' && !quotes[0])
+			quotes[1] = !quotes[1];
+		else if (is_redir(&s[i]) && !quotes[0] && !quotes[1])
 		{
 			if (i > 0 && s[i - 1] != ' ' && !is_redirect(s[i - 1]))
 				return (i - 1);

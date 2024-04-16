@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:26:57 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 17:31:38 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 19:27:14 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,32 @@ int	find_nextquote(char *s, int i, int *quote, char c)
 
 int	match_quote(char *s)
 {
-	int	i;
-	int	quotes[2];
+	size_t	i;
 
 	i = 0;
-	quotes[0] = 0;
-	quotes[1] = 0;
-	while (s[i])
+	while (i < ft_strlen(s))
 	{
 		if (s[i] == '\'')
-			i += find_nextquote(s, i, &quotes[0], '\'');
-		else if (s[i] == '"')
-			i += find_nextquote(s, i, &quotes[1], '"');
-		if (s[i] == '\0')
-			break ;
-		else
-			i++;
+		{
+			while (i++ < ft_strlen(s))
+			{
+				if (s[i] == '\'')
+					break ;
+			}
+			if (s[i] != '\'')
+				return (0);
+		}
+		if (s[i] == '"')
+		{
+			while (i++ < ft_strlen(s))
+			{
+				if (s[i] == '"')
+					break ;
+			}
+			if (s[i] != '"')
+				return (0);
+		}
+		i++;
 	}
-	if (quotes[0] % 2 || quotes[1] % 2)
-		return (0);
 	return (42);
 }

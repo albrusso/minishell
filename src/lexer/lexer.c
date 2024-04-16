@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 17:26:53 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 18:23:35 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:30:38 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	**parse_input(t_data *d)
 			lexhelp(d, d->line, tokens, i);
 		else if (d->line[i[0]] == '\'' && !quotes[1])
 			quotes[0] = !quotes[0];
-		else if (d->line[i[0]] == '\"')
+		else if (d->line[i[0]] == '\"' && !quotes[0])
 			quotes[1] = !quotes[1];
 	}
 	return (tokens);
@@ -68,10 +68,11 @@ int	check_lexer(t_data *d)
 	tmp = d->lex;
 	while (tmp)
 	{
-		if ((tmp->s[0] == '|' && !tmp->n) || (tmp->n && tmp->n->s[0] == '|')
+		if ((tmp->s[0] == '|' && !tmp->n)
+			|| (tmp->s[0] == '|' && tmp->n && tmp->n->s[0] == '|')
 			|| (tmp->s[0] == '|' && !lexindex(&d->lex, tmp)))
 			ret = error_syntax_token(d, "|");
-		else if (is_redir(tmp->s) && ft_strlen(tmp->s) < 3)
+		else if (is_redir(tmp->s) && !tmp->n)
 			ret = error_syntax_token(d, tmp->s);
 		if (!ret)
 			return (ret);
@@ -95,6 +96,5 @@ int	lexer(t_data *d)
 		g_exit = 2;
 		return (0);
 	}
-	expander(d, &d->lex);
 	return (42);
 }

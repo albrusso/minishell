@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 15:12:55 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 17:48:25 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:23:28 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	open_input(t_parser *p, char *s)
 {
 	if (p->fd_in != -42)
 		close(p->fd_in);
-	p->fd_in = open(&s[3], O_RDONLY);
+	p->fd_in = open(&s[2], O_RDONLY);
 	if (p->fd_in < 0)
 	{
-		perror(&s[3]);
+		perror(&s[2]);
 		g_exit = 1;
 		p->exe = false;
 	}
@@ -30,7 +30,7 @@ int	heredoc(t_data *d, char *s, int fd)
 	char	*line[2];
 
 	line[1] = ft_strjoin(s, "\n");
-	fd = open("heredoc", O_CREAT | O_RDWR | O_APPEND, 0777);
+	fd = open("heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fd < 0)
 		perror("heredoc");
 	while (1)

@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:34:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 16:04:37 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:13:39 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ int	size_malloc(t_lexer *lex)
 	return (i);
 }
 
-void	add_redir(t_lexer **redir, char *s1, char *s2)
+void	add_redir(t_data *d, t_lexer **redir, t_lexer *n1, t_lexer *n2)
 {
 	char	*tmp;
 
-	tmp = ft_strjoin(s1, " ");
-	tmp = ft_strjoin_gnl(tmp, s2);
+	tmp = ft_strjoin(n1->s, " ");
+	expander(d, &n2);
+	tmp = ft_strjoin_gnl(tmp, n2->s);
 	lexadd_back(redir, lexnew(ft_strdup(tmp)));
 	free(tmp);
 }
@@ -48,16 +49,20 @@ void	fill_cmdredir(t_data *d, char **cmd, t_lexer *lex)
 	{
 		if (!ft_strncmp(lex->s, "|", 1))
 		{
+			expander(d, &lex);
 			lex = lex->n;
 			break ;
 		}
 		else if (is_redir(lex->s))
 		{
-			add_redir(&redir, lex->s, lex->n->s);
+			add_redir(d, &redir, lex, lex->n);
 			lex = lex->n;
 		}
 		else
+		{
+			expander(d, &lex);
 			cmd[i++] = ft_strdup(lex->s);
+		}
 		lex = lex->n;
 	}
 	parsadd_back(&d->pars, parsnew(cmd, redir));

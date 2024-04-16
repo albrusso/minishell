@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:01:23 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 18:01:59 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/15 19:33:33 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ int	run_shell(t_data *d)
 	if (d->line[0] == '\0')
 		return (clean_exit(d, &d->m, false));
 	add_history(d->line);
-	if (!match_quote(d->line))
-		return (mini_error(d, 1, false));
 	if (!lexer(d))
 		return (clean_exit(d, &d->m, false));
 	parser(d);

@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 17:59:26 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:14:08 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ t_parser	*parslast(t_parser *pars);
 t_parser	*parsnew(char **cmd, t_lexer *redir);
 
 int			size_malloc(t_lexer *lex);
-void		add_redir(t_lexer **redir, char *s1, char *s2);
+void		add_redir(t_data *d, t_lexer **redir, t_lexer *n1, t_lexer *n2);
 int			is_redir(char *s);
 void		fill_cmdredir(t_data *d, char **cmd, t_lexer *lex);
 void		parser(t_data *d);

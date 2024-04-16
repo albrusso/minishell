@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:46:58 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 17:56:26 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 08:49:53 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,26 +99,22 @@ char	*try_expand(char *env[], char *s)
 
 void	expander(t_data *d, t_lexer **lex)
 {
-	t_lexer	*tmp;
-	char	*tmp1;
+	char	*tmp;
+	t_lexer	*tmp1;
 
-	tmp = *lex;
-	while (tmp)
+	tmp1 = *lex;
+	if (ft_strchr(tmp1->s, '$'))
 	{
-		if (ft_strchr(tmp->s, '$'))
-		{
-			tmp1 = ft_strdup(tmp->s);
-			free(tmp->s);
-			tmp->s = try_expand(d->env, tmp1);
-			free(tmp1);
-		}
+		tmp = ft_strdup(tmp1->s);
+		free(tmp1->s);
+		tmp1->s = try_expand(d->env, tmp);
+		free(tmp);
+	}
+	else
+	{
+		if (i_strchr(tmp1->s, '\'') < i_strchr(tmp1->s, '"'))
+			tmp1->s = delete_and_replace(tmp1->s, '"', '\'');
 		else
-		{
-			if (i_strchr(tmp->s, '\'') < i_strchr(tmp->s, '"'))
-				tmp->s = delete_and_replace(tmp->s, '"', '\'');
-			else
-				tmp->s = delete_and_replace(tmp->s, '\'', '"');
-		}
-		tmp = tmp->n;
+			tmp1->s = delete_and_replace(tmp1->s, '\'', '"');
 	}
 }

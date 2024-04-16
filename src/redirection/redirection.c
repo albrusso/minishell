@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:20:29 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 18:02:34 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:20:10 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ int	is_redir(char *s)
 	if (!ft_strncmp(s, ">", 1))
 		return (1);
 	if (!ft_strncmp(s, ">>", 2))
+		return (1);
+	if (!ft_strncmp(s, "|", 1))
 		return (1);
 	return (0);
 }
