@@ -6,53 +6,28 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:26:57 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 19:27:14 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 11:00:49 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	find_nextquote(char *s, int i, int *quote, char c)
-{
-	int	j;
-
-	j = i + 1;
-	*quote += 1;
-	while (s[j] && s[j] != c)
-		j++;
-	if (s[j] == c)
-		*quote += 1;
-	return (j - i + 1);
-}
-
 int	match_quote(char *s)
 {
-	size_t	i;
+	int		i;
+	bool	quotes[2];
 
-	i = 0;
-	while (i < ft_strlen(s))
+	i = -1;
+	quotes[0] = false;
+	quotes[1] = false;
+	while (s[++i])
 	{
-		if (s[i] == '\'')
-		{
-			while (i++ < ft_strlen(s))
-			{
-				if (s[i] == '\'')
-					break ;
-			}
-			if (s[i] != '\'')
-				return (0);
-		}
-		if (s[i] == '"')
-		{
-			while (i++ < ft_strlen(s))
-			{
-				if (s[i] == '"')
-					break ;
-			}
-			if (s[i] != '"')
-				return (0);
-		}
-		i++;
+		if (s[i] == '\'' && !quotes[1])
+			quotes[0] = !quotes[0];
+		else if (s[i] == '"' && !quotes[0])
+			quotes[1] = !quotes[1];
 	}
-	return (42);
+	if (quotes[0] || quotes[1])
+		return (0);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 14:02:54 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/04 15:29:04 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 12:47:19 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	ft_strncmp(const char *str1, const char *str2, size_t n)
 		return (1);
 	else if ((!str1 || !str2) && str1 == str2)
 		return (0);
+	if (n == 0)
+		return (1);
 	i = 0;
 	while (i < n)
 	{

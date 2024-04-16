@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:09:43 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 15:09:57 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 15:36:05 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	**realloc_copy(char **arr, int size)
 	char	**tmp;
 	int		i;
 
-	tmp = ft_calloc(size, sizeof(char *));
+	tmp = ft_calloc(size + 1, sizeof(char *));
 	i = -1;
 	while (arr[++i])
 		tmp[i] = ft_strdup(arr[i]);
@@ -32,6 +32,8 @@ char	**get_path(char **env)
 	int		i;
 
 	tmp1 = mini_getenv(env, "PATH");
+	if (!tmp1)
+		return (NULL);
 	tmp2 = ft_split(tmp1, ':');
 	i = -1;
 	while (tmp2[++i])

@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:57:42 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/16 09:03:13 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 15:50:21 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	wait_child(t_data *d)
 
 void	parent_process(t_data *d, t_parser *p)
 {
-	signal(SIGINT, signal_print);
-	signal(SIGQUIT, signal_print);
+	signal(SIGINT, signal_parent);
+	signal(SIGQUIT, signal_parent);
 	if (p->exe == false && p->n)
 	{
 		close(d->end[1]);
@@ -71,6 +71,8 @@ void	child_process(t_data *d, t_parser *p)
 		set_redirect(p);
 	if (is_builtin(p->cmd[0]))
 		exec_builtin_fork(d, p);
+	else if (p->cmd && !p->cmd[0])
+		clean_exit(d, &d->m, true);
 	else if (p->exe == true)
 		execute_onecmd(d, p);
 }

@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:58:44 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/08 14:44:51 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 10:43:25 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,23 @@ void	unset_env(t_data *d, char *s)
 int	mini_unset(t_data *d, char **cmd)
 {
 	int	i;
+	int	j;
 
 	i = 0;
+	j = -1;
 	while (cmd[++i])
 	{
 		if (!ft_strchr(cmd[i], '='))
+		{
+			if (!ft_strncmp(cmd[i], "PATH", 4))
+			{
+				while (d->path[++j])
+					free(d->path[j]);
+				free(d->path);
+				d->path = NULL;
+			}
 			unset_env(d, cmd[i]);
+		}
 		else
 			printf("minishell: unset: '%s': not a valid identifier\n", cmd[i]);
 	}

@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:46:58 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/16 08:49:53 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 12:45:21 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ char	*try_expand_help(char *res, char *s, char **env, int sei[3])
 	int		j;
 
 	tmp = ft_calloc(sei[1] - sei[0] + 1, 1);
-	ft_memcpy(tmp, &s[sei[0]], sei[1] - sei[0] - 1);
+	ft_memcpy(tmp, &s[sei[0]], sei[1] - sei[0]);
 	j = -1;
 	while (env[++j])
 	{
 		if (ft_strchr(env[j], '=')
-			&& !ft_strncmp(env[j], tmp, ft_strlen(tmp)))
+			&& !ft_strncmp(env[j], tmp, ft_strlen(tmp))
+			&& env[j][ft_strlen(tmp)] == '=')
 		{
 			res = ft_strjoin_gnl(res, ft_strchr(env[j], '=') + 1);
 			sei[2] = sei[1] - 1;
@@ -108,6 +109,11 @@ void	expander(t_data *d, t_lexer **lex)
 		tmp = ft_strdup(tmp1->s);
 		free(tmp1->s);
 		tmp1->s = try_expand(d->env, tmp);
+		if (!ft_strncmp(tmp1->s, tmp, ft_strlen(tmp)))
+		{
+			free(tmp1->s);
+			tmp1->s = ft_strdup("");
+		}
 		free(tmp);
 	}
 	else

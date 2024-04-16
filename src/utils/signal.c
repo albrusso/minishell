@@ -6,13 +6,13 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 18:03:11 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/08 14:51:25 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 14:03:06 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	signal_print(int sig)
+void	signal_parent(int sig)
 {
 	(void)sig;
 	g_exit = 130;

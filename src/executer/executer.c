@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:16:10 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 17:19:27 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 15:52:58 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	execute_onecmd(t_data *d, t_parser *p)
 			execve(p->cmd[0], p->cmd, d->env);
 		else
 		{
-			while (d->path[++i])
+			while (d->path && d->path[++i])
 			{
 				tmp = ft_strjoin(d->path[i], p->cmd[0]);
 				if (!access(tmp, F_OK))
@@ -49,14 +49,6 @@ void	execute_onecmd(t_data *d, t_parser *p)
 		g_exit = 127;
 		clean_exit(d, &d->m, true);
 	}
-}
-
-void	try_execute(t_data *d, t_parser *p, char **cmd)
-{
-	if (is_builtin(cmd[0]))
-		execute_builtin(d, p, cmd);
-	else
-		execvp(cmd[0], cmd);
 }
 
 void	executer(t_data *d, t_parser *p)

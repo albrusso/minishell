@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:01:23 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 19:33:33 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 15:34:57 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	clean_exit(t_data *d, t_message *m, bool _exit)
 	else
 	{
 		d->restart = true;
+		if (!d->path)
+			d->path = get_path(d->env);
 		run_shell(d);
 	}
 	return (1);
@@ -63,6 +65,8 @@ int	run_shell(t_data *d)
 	if (d->line[0] == '\0')
 		return (clean_exit(d, &d->m, false));
 	add_history(d->line);
+	if (!match_quote(d->line))
+		return (mini_error(d, 1, false));
 	if (!lexer(d))
 		return (clean_exit(d, &d->m, false));
 	parser(d);

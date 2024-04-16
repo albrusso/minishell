@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 11:26:00 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 19:39:44 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 10:18:30 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	mini_error(t_data *d, int err, bool b)
 {
 	ft_putstr_fd("minishell: ", STDOUT_FILENO);
 	if (err == 1)
-		ft_putendl_fd("unexpected newline while looking for matching quote",
+		ft_putendl_fd("unexpected 'newline' while looking for matching quote",
 			STDOUT_FILENO);
 	if (err == 2)
 		ft_putendl_fd("exit: too many arguments", STDOUT_FILENO);

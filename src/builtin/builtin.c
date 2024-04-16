@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:15:22 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/15 16:21:27 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 10:46:55 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 int	is_builtin(char *s)
 {
-	if (!ft_strncmp(s, "cd", 2))
+	if (!ft_strncmp(s, "cd", ft_strlen(s)))
 		return (1);
-	else if (!ft_strncmp(s, "echo", 4))
+	else if (!ft_strncmp(s, "echo", ft_strlen(s)))
 		return (1);
-	else if (!ft_strncmp(s, "env", 3))
+	else if (!ft_strncmp(s, "env", ft_strlen(s)))
 		return (1);
-	else if (!ft_strncmp(s, "exit", 4))
+	else if (!ft_strncmp(s, "exit", ft_strlen(s)))
 		return (1);
-	else if (!ft_strncmp(s, "export", 6))
+	else if (!ft_strncmp(s, "export", ft_strlen(s)))
 		return (1);
-	else if (!ft_strncmp(s, "pwd", 3))
+	else if (!ft_strncmp(s, "pwd", ft_strlen(s)))
 		return (1);
-	else if (!ft_strncmp(s, "unset", 5))
+	else if (!ft_strncmp(s, "unset", ft_strlen(s)))
 		return (1);
 	return (0);
 }

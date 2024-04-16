@@ -6,7 +6,7 @@
 /*   By: albrusso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:42:36 by albrusso          #+#    #+#             */
-/*   Updated: 2024/04/16 09:14:08 by albrusso         ###   ########.fr       */
+/*   Updated: 2024/04/16 14:49:15 by albrusso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,7 @@ void		t_data_init(t_data *d, char **envp);
 void		t_data_free(t_data *d, bool _exit);
 
 void		signal_handler(int sig);
-void		signal_print(int sig);
-
-void		error_synatx_token(t_data *d, char *s);
+void		signal_parent(int sig);
 
 char		*mini_getenv(char **env, char *s);
 void		mini_setenv(t_data *d, const char *s1, char *s2);
@@ -96,7 +94,6 @@ void		lexadd_back(t_lexer **lex, t_lexer *new);
 t_lexer		*lexlast(t_lexer *lex);
 t_lexer		*lexnew(char *s);
 
-int			find_nextquote(char *s, int i, int *quote, char c);
 int			match_quote(char *s);
 
 int			lexer(t_data *d);
@@ -128,7 +125,7 @@ t_parser	*parslast(t_parser *pars);
 t_parser	*parsnew(char **cmd, t_lexer *redir);
 
 int			size_malloc(t_lexer *lex);
-void		add_redir(t_data *d, t_lexer **redir, t_lexer *n1, t_lexer *n2);
+void		add_redir(t_data *d, t_lexer **redir, t_lexer **n1, t_lexer *n2);
 int			is_redir(char *s);
 void		fill_cmdredir(t_data *d, char **cmd, t_lexer *lex);
 void		parser(t_data *d);
@@ -174,7 +171,7 @@ int			mini_env(t_data *d, char **env, char **path);
 int			mini_exit(t_data *d, char **cmd);
 
 char		*env_value(char *s, char *tmp1);
-void		export_inenv(t_data *d, char *s);
+int			export_inenv(t_data *d, char *s);
 int			mini_export(t_data *d, char **cmd);
 
 int			mini_pwd(char *s);
@@ -186,5 +183,8 @@ int			clean_exit(t_data *d, t_message *m, bool _exit);
 int			mini_error(t_data *d, int err, bool b);
 int			error_syntax_token(t_data *d, char *s);
 int			lexindex(t_lexer **lex, t_lexer *node);
+void		sortprint(char **a);
+void		swap_string(char **a, char **b);
+void		sort_string(char **a, int len);
 
 #endif
